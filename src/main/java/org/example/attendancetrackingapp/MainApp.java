@@ -30,6 +30,7 @@ public class MainApp extends Application {
 
         createTableButton.setOnAction(e -> createTable());
         addButton.setOnAction(e -> AddDataWindow.display());
+        viewButton.setOnAction(e -> AddViewWindow.display());
 
         VBox layout = new VBox(10, createTableButton, addButton, viewButton);
         Scene scene = new Scene(layout, 300, 200);

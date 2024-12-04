@@ -78,7 +78,7 @@ public class AddDataWindow {
             showAlert(Alert.AlertType.INFORMATION, "Успех!", "Данные успешно добавлены!");
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Ошибка!", "Не удалось добавтьб данные в СУБД MySQL!");
+            showAlert(Alert.AlertType.ERROR, "Ошибка!", "Не удалось добавить данные в СУБД MySQL!");
         }
     }
 }
