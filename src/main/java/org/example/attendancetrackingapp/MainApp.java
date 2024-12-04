@@ -15,6 +15,7 @@ public class MainApp extends Application {
     public void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
+        alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
@@ -28,6 +29,7 @@ public class MainApp extends Application {
         Button viewButton = new Button("View date in BD");
 
         createTableButton.setOnAction(e -> createTable());
+        addButton.setOnAction(e -> AddDataWindow.display());
 
         VBox layout = new VBox(10, createTableButton, addButton, viewButton);
         Scene scene = new Scene(layout, 300, 200);
