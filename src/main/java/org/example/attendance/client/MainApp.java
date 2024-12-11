@@ -1,3 +1,5 @@
+package org.example.attendance.client;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
