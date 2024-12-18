@@ -20,9 +20,9 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.client.dashboardController">
     <children>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+        <AnchorPane fx:id="main_form" prefHeight="200.0" prefWidth="200.0">
             <children>
                 <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <left>
@@ -33,7 +33,7 @@
                                         <Insets top="50.0" />
                                     </VBox.margin>
                                 </FontAwesomeIconView>
-                                <Label text="Your Name" textFill="WHITE">
+                                <Label fx:id="username" text="Your Name" textFill="WHITE">
                                     <VBox.margin>
                                         <Insets top="5.0" />
                                     </VBox.margin>
@@ -46,7 +46,7 @@
                                         <Insets top="10.0" />
                                     </VBox.margin>
                                 </Line>
-                                <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="175.0" styleClass="nav-btn" stylesheets="@../css/main.css" text="Home">
+                                <Button fx:id="home_btn" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="175.0" styleClass="nav-btn" stylesheets="@../css/main.css" text="Home">
                                     <VBox.margin>
                                         <Insets top="25.0" />
                                     </VBox.margin>
@@ -54,7 +54,7 @@
                                         <FontAwesomeIconView fill="WHITE" glyphName="HOME" size="1.7em" />
                                     </graphic>
                                 </Button>
-                                <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="175.0" styleClass="nav-btn" stylesheets="@../css/main.css" text="Students">
+                                <Button fx:id="students_btn" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="175.0" styleClass="nav-btn" stylesheets="@../css/main.css" text="Students">
                                     <VBox.margin>
                                         <Insets top="10.0" />
                                     </VBox.margin>
@@ -62,7 +62,7 @@
                                         <FontAwesomeIconView fill="WHITE" glyphName="USERS" size="1.5em" />
                                     </graphic>
                                 </Button>
-                                <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="175.0" styleClass="nav-btn" stylesheets="@../css/main.css" text="Reports">
+                                <Button mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="175.0" styleClass="nav-btn" stylesheets="@../css/main.css" text="Reports">
                                     <VBox.margin>
                                         <Insets top="10.0" />
                                     </VBox.margin>
@@ -83,30 +83,37 @@
                     <center>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                             <children>
-                                <AnchorPane layoutX="176.0" layoutY="157.0" prefHeight="600.0" prefWidth="900.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                    <children>
-                                        <AnchorPane layoutX="34.4" layoutY="194.0" prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                            <children>
-                                                <AnchorPane layoutX="122.0" layoutY="200.0" prefHeight="158.0" prefWidth="900.0" AnchorPane.bottomAnchor="442.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                    <children>
-                                                        <AnchorPane layoutX="41.0" layoutY="25.0" prefHeight="85.0" prefWidth="94.0" />
-                                                        <AnchorPane layoutX="248.0" layoutY="36.0" prefHeight="85.0" prefWidth="94.0" />
-                                                        <AnchorPane layoutX="573.0" layoutY="42.0" prefHeight="85.0" prefWidth="94.0" />
-                                                    </children>
-                                                </AnchorPane>
-                                                <BarChart layoutX="147.0" layoutY="348.0" prefHeight="238.0" prefWidth="506.0">
-                                                    <xAxis>
-                                                        <CategoryAxis side="BOTTOM" />
-                                                    </xAxis>
-                                                    <yAxis>
-                                                        <NumberAxis side="LEFT" />
-                                                    </yAxis>
-                                                </BarChart>
-                                            </children>
-                                        </AnchorPane>
-                                    </children>
+                                <AnchorPane fx:id="home_form" layoutX="176.0" layoutY="157.0" prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <AnchorPane layoutX="13.0" layoutY="10.0" prefHeight="578.0" prefWidth="874.0" stylesheets="@../css/main.css">
+                                 <children>
+                                    <VBox prefHeight="578.0" prefWidth="874.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <VBox prefHeight="328.0" prefWidth="874.0" stylesheets="@../css/main.css">
+                                             <styleClass>
+                                                <String fx:value="white-bg" />
+                                                <String fx:value="shadow" />
+                                             </styleClass>
+                                          </VBox>
+                                          <BarChart fx:id="home_chart">
+                                            <xAxis>
+                                              <CategoryAxis side="BOTTOM" />
+                                            </xAxis>
+                                            <yAxis>
+                                              <NumberAxis side="LEFT" />
+                                            </yAxis>
+                                          </BarChart>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <styleClass>
+                                    <String fx:value="white-bg" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                              </AnchorPane>
+                           </children>
                                 </AnchorPane>
-                                <AnchorPane layoutX="71.0" layoutY="163.0" prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <AnchorPane fx:id="students_form" layoutX="71.0" layoutY="163.0" prefHeight="600.0" prefWidth="900.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
                                         <AnchorPane layoutX="13.0" layoutY="11.0" prefHeight="578.0" prefWidth="874.0" stylesheets="@../css/main.css">
                                             <children>
@@ -114,9 +121,9 @@
                                                     <children>
                                                         <VBox prefHeight="328.0" prefWidth="874.0" stylesheets="@../css/main.css">
                                                             <children>
-                                                                <AnchorPane prefHeight="30.0" prefWidth="874.0">
+                                                                <AnchorPane fx:id="students_tableView" prefHeight="30.0" prefWidth="874.0">
                                                                     <children>
-                                                                        <TextField layoutY="1.0" prefHeight="30.0" prefWidth="200.0" promptText="Search" styleClass="search" stylesheets="@../css/main.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="654.0" AnchorPane.topAnchor="0.0" />
+                                                                        <TextField fx:id="students_search" layoutY="1.0" prefHeight="30.0" prefWidth="200.0" promptText="Search" styleClass="search" stylesheets="@../css/main.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="654.0" AnchorPane.topAnchor="0.0" />
                                                                         <FontAwesomeIconView glyphName="SEARCH" layoutX="7.0" layoutY="21.0" size="20" />
                                                                     </children>
                                                                     <VBox.margin>
@@ -125,14 +132,14 @@
                                                                 </AnchorPane>
                                                                 <TableView prefHeight="244.0" prefWidth="854.0" stylesheets="@../css/main.css">
                                                                     <columns>
-                                                                        <TableColumn prefWidth="57.5999892950058" text="ID" />
-                                                                        <TableColumn prefWidth="103.20001983642578" text="Date" />
-                                                                        <TableColumn prefWidth="91.99993896484375" text="Discipline" />
-                                                                        <TableColumn prefWidth="64.0" text="Group" />
-                                                                        <TableColumn prefWidth="115.20001220703125" text="First Name" />
-                                                                        <TableColumn prefWidth="110.39999389648438" text="Last Name" />
-                                                                        <TableColumn prefWidth="58.4000244140625" text="Status" />
-                                                                        <TableColumn prefWidth="253.60003662109375" text="Note" />
+                                                                        <TableColumn fx:id="students_col_ID" prefWidth="57.5999892950058" text="ID" />
+                                                                        <TableColumn fx:id="students_col_date" prefWidth="103.20001983642578" text="Date" />
+                                                                        <TableColumn fx:id="students_col_descipline" prefWidth="91.99993896484375" text="Discipline" />
+                                                                        <TableColumn fx:id="students_col_group" prefWidth="64.0" text="Group" />
+                                                                        <TableColumn fx:id="students_col_firstName" prefWidth="115.20001220703125" text="First Name" />
+                                                                        <TableColumn fx:id="students_col_lastName" prefWidth="110.39999389648438" text="Last Name" />
+                                                                        <TableColumn fx:id="students_col_status" prefWidth="58.4000244140625" text="Status" />
+                                                                        <TableColumn fx:id="students_col_note" prefWidth="253.60003662109375" text="Note" />
                                                                     </columns>
                                                                     <VBox.margin>
                                                                         <Insets bottom="10.0" left="10.0" right="10.0" top="15.0" />
@@ -159,7 +166,7 @@
                                                                                         <Insets right="5.0" />
                                                                                     </HBox.margin>
                                                                                 </Label>
-                                                                                <TextField prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                                                <TextField fx:id="students_studentsID" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
                                                                             </children>
                                                                             <padding>
                                                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
@@ -172,7 +179,7 @@
                                                                                         <Insets right="5.0" />
                                                                                     </HBox.margin>
                                                                                 </Label>
-                                                                                <TextField prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                                                <TextField fx:id="students_date" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
                                                                             </children>
                                                                             <padding>
                                                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
@@ -185,7 +192,7 @@
                                                                                         <Insets right="5.0" />
                                                                                     </HBox.margin>
                                                                                 </Label>
-                                                                                <TextField prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                                                <TextField fx:id="students_discipline" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
                                                                             </children>
                                                                             <padding>
                                                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
@@ -198,7 +205,7 @@
                                                                                         <Insets right="5.0" />
                                                                                     </HBox.margin>
                                                                                 </Label>
-                                                                                <TextField prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                                                <TextField fx:id="students_group" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
                                                                             </children>
                                                                             <padding>
                                                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
@@ -221,7 +228,7 @@
                                                                                         <Insets right="5.0" />
                                                                                     </HBox.margin>
                                                                                 </Label>
-                                                                                <TextField prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                                                <TextField fx:id="students_firstName" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
                                                                             </children>
                                                                             <padding>
                                                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
@@ -234,7 +241,7 @@
                                                                                         <Insets right="5.0" />
                                                                                     </HBox.margin>
                                                                                 </Label>
-                                                                                <TextField prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                                                <TextField fx:id="students_lastName" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
                                                                             </children>
                                                                             <padding>
                                                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
@@ -247,7 +254,7 @@
                                                                                         <Insets right="5.0" />
                                                                                     </HBox.margin>
                                                                                 </Label>
-                                                                                <ChoiceBox prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                                                <ChoiceBox fx:id="students_status" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
                                                                             </children>
                                                                             <padding>
                                                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
@@ -267,7 +274,7 @@
                                                                                         <Insets right="5.0" />
                                                                                     </HBox.margin>
                                                                                 </Label>
-                                                                                <TextField prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                                                <TextField fx:id="students_note" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
                                                                             </children>
                                                                             <padding>
                                                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
@@ -287,12 +294,12 @@
                                                             <children>
                                                                 <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="437.0">
                                                                     <children>
-                                                                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="125.0" styleClass="clear-btn" stylesheets="@../css/main.css" text="Clear">
+                                                                        <Button fx:id="students_clearBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="125.0" styleClass="clear-btn" stylesheets="@../css/main.css" text="Clear">
                                                                             <HBox.margin>
                                                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                                             </HBox.margin>
                                                                         </Button>
-                                                                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="125.0" styleClass="delete-btn" stylesheets="@../css/main.css" text="Delete" textFill="#784b1e">
+                                                                        <Button fx:id="students_deleteBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="125.0" styleClass="delete-btn" stylesheets="@../css/main.css" text="Delete" textFill="#784b1e">
                                                                             <HBox.margin>
                                                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                                             </HBox.margin>
@@ -304,12 +311,12 @@
                                                                 </HBox>
                                                                 <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="437.0">
                                                                     <children>
-                                                                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="125.0" styleClass="update-btn" stylesheets="@../css/main.css" text="Update" textFill="#781d1d">
+                                                                        <Button fx:id="students_updateBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="125.0" styleClass="update-btn" stylesheets="@../css/main.css" text="Update" textFill="#781d1d">
                                                                             <HBox.margin>
                                                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                                             </HBox.margin>
                                                                         </Button>
-                                                                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="125.0" styleClass="add-btn" stylesheets="@../css/main.css" text="Add">
+                                                                        <Button fx:id="students_addBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="125.0" styleClass="add-btn" stylesheets="@../css/main.css" text="Add">
                                                                             <HBox.margin>
                                                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                                             </HBox.margin>
