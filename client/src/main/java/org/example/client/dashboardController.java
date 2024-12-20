@@ -1,14 +1,19 @@
 package org.example.client;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -101,6 +106,34 @@ public class dashboardController implements Initializable {
     @FXML
     private Label username;
 
+    @FXML
+    private TextArea serverMessages;
+
+    @FXML
+    private TextField commandInput;
+
+    @FXML
+    private Button sendCommandBtn;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+//        students_addBtn.setOnAction(event -> {
+//            try (Socket socket = new Socket("127.0.0.1", 2048);
+//                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+//                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+//
+//                // Отправка команды на сервер
+//                out.println("GET_DATA");
+//
+//                // Получение ответа от сервера
+//                String response = in.readLine();
+//                // Обработка ответа и обновление интерфейса
+//                textArea.setText(response);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        });
+    }
 
     public void switchForm(ActionEvent event) {
         if (event.getSource() == home_btn) {
@@ -110,11 +143,6 @@ public class dashboardController implements Initializable {
             home_form.setVisible(false);
             students_form.setVisible(true);
         }
-
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
 }
