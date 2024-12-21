@@ -1,5 +1,7 @@
 package org.example.server;
 
+import org.example.shared.StudentData;
+
 import java.net.Socket;
 
 import java.io.BufferedReader;
@@ -40,17 +42,15 @@ class ClientHandler implements Runnable {
                 String command = parts[0];
 
                 switch (command) {
-                    case "GET_USERS":
-                        sendUsers();
+                    case "GET":
+                        handleGet();
                         break;
-                    case "ADD_USER":
-                        if (parts.length == 3) {
-                            addUser(parts[1], parts[2]);
-                        }
+                    case "ADD":
+                        handleAdd(parts);
                         break;
-                    case "UPDATE_USER":
-                        if (parts.length == 4) {
-                            updateUser(Integer.parseInt(parts[1]), parts[2], parts[3]);
+                    case "UPDATE":
+                        if (parts.length == 9) {
+                            updateUser(Integer.parseInt(parts[1]), parts[2], parts[3], parts[4], parts[5], parts[6], parts[7], parts[8]);
                         }
                         break;
                     default:
@@ -69,7 +69,7 @@ class ClientHandler implements Runnable {
         }
     }
 
-    private void sendUsers() {
+    private void handleGet() {
         try {
             Statement stmt = connect.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT student_id, date, discipline, group_id, first_name, last_name, status, note FROM student");
@@ -101,24 +101,29 @@ class ClientHandler implements Runnable {
         }
     }
 
-    private void addUser(String name, String email) {
+    private void handleAdd(String[] parts) {
         try {
-            PreparedStatement pstmt = connect.prepareStatement("INSERT INTO student (student_id, date, discipline, group_id, first_name, last_name, status, note) VALUES (?, ?)");
-            pstmt.setString(1, name);
-            pstmt.setString(2, email);
+            // Ожидается формат: ADD|Date|Discipline|GroupID|FirstName|LastName|Status|Note
+            String query = "INSERT INTO student (date, discipline, group_id, first_name, last_name, status, note) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement pstmt = connect.prepareStatement(query);
+            pstmt.setString(1, parts[1]);
+            pstmt.setString(2, parts[2]);
+            pstmt.setString(3, parts[3]);
+            pstmt.setString(4, parts[4]);
+            pstmt.setString(5, parts[5]);
+            pstmt.setString(6, parts[6]);
+            pstmt.setString(7, parts[7]);
             pstmt.executeUpdate();
-            out.println("SUCCESS");
+            out.println("SUCCESS|Запись добавлена");
         } catch (SQLException e) {
-            e.printStackTrace();
-            out.println("ERROR");
+            out.println("ERROR|" + e.getMessage());
         }
     }
 
-    private void updateUser(int id, String name, String email) {
+    private void updateUser(int studentID, String date, String discilpine, String groupID, String firstName, String lastName, String status, String note) {
         try {
             PreparedStatement pstmt = connect.prepareStatement(
                     "UPDATE student SET " +
-                            "student_id = ?, " +
                             "date = ?, " +
                             "discipline = ?, " +
                             "group_id = ?, " +
@@ -126,10 +131,15 @@ class ClientHandler implements Runnable {
                             "last_name = ?, " +
                             "status = ?, " +
                             "note = ?," +
-                            "WHERE id = ?");
-            pstmt.setString(1, name);
-            pstmt.setString(2, email);
-            pstmt.setInt(3, id);
+                            "WHERE student_id = ?");
+            pstmt.setString(1, date);
+            pstmt.setString(2, discilpine);
+            pstmt.setString(3, groupID);
+            pstmt.setString(4, firstName);
+            pstmt.setString(5, lastName);
+            pstmt.setString(6, status);
+            pstmt.setString(7, note);
+            pstmt.setInt(8, studentID);
             pstmt.executeUpdate();
             out.println("SUCCESS");
         } catch (SQLException e) {

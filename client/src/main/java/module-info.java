@@ -10,6 +10,7 @@ module org.example.client {
     requires de.jensd.fx.glyphs.fontawesome;
     requires java.sql;
     requires com.google.gson;
+    requires java.desktop;
 
     opens org.example.client to javafx.fxml;
     exports org.example.client;

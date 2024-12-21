@@ -13,6 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import org.example.shared.StudentData;
 
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,6 +22,7 @@ import java.lang.reflect.Type;
 import java.net.Socket;
 import java.net.URL;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -47,80 +49,120 @@ public class dashboardController implements Initializable {
     @FXML
     private Button students_clearBtn;
 
-    @FXML
-    private TableView<StudentData> students_tableView;
+    @FXML private TableView<StudentData> studentsTableView;
+    @FXML private TableColumn<StudentData, Integer> studentsColStudentID;
+    @FXML private TableColumn<StudentData, String> studentsColDate;
+    @FXML private TableColumn<StudentData, String> studentsColDiscipline;
+    @FXML private TableColumn<StudentData, String> studentsColGroupID;
+    @FXML private TableColumn<StudentData, String> studentsColFirstName;
+    @FXML private TableColumn<StudentData, String> studentsColLastName;
+    @FXML private TableColumn<StudentData, String> studentsColStatus;
+    @FXML private TableColumn<StudentData, String> studentsColNote;
 
-    @FXML
-    private TableColumn<StudentData, Integer> students_col_ID;
-
-    @FXML
-    private TableColumn<StudentData, Date> students_col_date;
-
-    @FXML
-    private TableColumn<StudentData, String> students_col_discipline;
-
-    @FXML
-    private TableColumn<StudentData, String> students_col_firstName;
-
-    @FXML
-    private TableColumn<StudentData, String> students_col_group;
-
-    @FXML
-    private TableColumn<StudentData, String> students_col_lastName;
-
-    @FXML
-    private TableColumn<StudentData, String> students_col_note;
-
-    @FXML
-    private TableColumn<StudentData, String> students_col_status;
-
-    @FXML
-    private TextField students_date;
+    @FXML private TextField studentsFieldStudentID;
+    @FXML private TextField studentsFieldDate;
+    @FXML private TextField studentsFieldDiscipline;
+    @FXML private TextField studentsFieldGroupID;
+    @FXML private TextField studentsFieldFirstName;
+    @FXML private TextField studentsFieldLastName;
+    @FXML private ChoiceBox studentsChoiceBoxStatus;
+    @FXML private TextField studentsFieldNote;
 
     @FXML
     private Button students_deleteBtn;
-
-    @FXML
-    private TextField students_discipline;
-
-    @FXML
-    private TextField students_firstName;
-
     @FXML
     private AnchorPane students_form;
-
-    @FXML
-    private TextField students_group;
-
-    @FXML
-    private TextField students_lastName;
-
-    @FXML
-    private TextField students_note;
-
     @FXML
     private TextField students_search;
-
-    @FXML
-    private ChoiceBox<?> students_status;
-
-    @FXML
-    private TextField students_studentsID;
-
     @FXML
     private Button students_updateBtn;
-
     @FXML
     private Label username;
-
     @FXML
     private TextArea serverMessages;
-
     @FXML
     private TextField commandInput;
-
     @FXML
     private Button sendCommandBtn;
+
+
+    @FXML
+    private void studentsBtnClear() {
+        studentsFieldStudentID.clear();
+        studentsFieldDate.clear();
+        studentsFieldDiscipline.clear();
+        studentsFieldGroupID.clear();
+        studentsFieldFirstName.clear();
+        studentsFieldLastName.clear();
+        studentsChoiceBoxStatus.getSelectionModel().clearSelection();
+        studentsFieldNote.clear();
+    }
+    @FXML
+    private void studentsBtnAdd() {
+        String date = studentsFieldDate.getText();
+        String discipline = studentsFieldDiscipline.getText();
+        String groupID = studentsFieldGroupID.getText();
+        String firstName = studentsFieldFirstName.getText();
+        String lastName = studentsFieldLastName.getText();
+        String status = (String) studentsChoiceBoxStatus.getValue();
+        String note = studentsFieldNote.getText();
+
+        if (date.isEmpty() || discipline.isEmpty() || groupID.isEmpty() ||
+                firstName.isEmpty() || lastName.isEmpty() || status.isEmpty()) {
+            showAlert("Внимание", "Пожалуйста, заполните все поля.");
+            return;
+        }
+
+        String command = String.join("|", "ADD", date, discipline, groupID, firstName, lastName, status, note);
+        out.println(command);
+
+        try {
+            String response = in.readLine();
+            if (response.startsWith("SUCCESS|")) {
+                showAlert("Успех", response.substring(8));
+                refreshTable();
+                studentsBtnClear();
+            } else if (response.startsWith("ERROR|")) {
+                showAlert("Ошибка", response.substring(6));
+            }
+        } catch (IOException e) {
+            showAlert("Ошибка", "Ошибка при добавлении записи.");
+        }
+    }
+
+//    @FXML
+//    private void studentsUpdate() {
+//        StudentData selected = studentsTableView.getSelectionModel().getSelectedItem();
+//        if (selected == null) {
+//            showAlert("Внимание", "Выберите запись для обновления.");
+//            return;
+//        }
+//
+//        String studentID = String.valueOf(selected.getStudentID());
+//        String date = fieldDate.getText();
+//        String discipline = fieldDiscipline.getText();
+//        String groupID = fieldGroupID.getText();
+//        String firstName = fieldFirstName.getText();
+//        String lastName = fieldLastName.getText();
+//        String status = fieldStatus.getText();
+//        String note = fieldNote.getText();
+//
+//        String command = String.join("|", "UPDATE", studentID, date, discipline, groupID, firstName, lastName, status, note);
+//        out.println(command);
+//
+//        try {
+//            String response = in.readLine();
+//            if (response.startsWith("SUCCESS|")) {
+//                showAlert("Успех", response.substring(8));
+//                loadData();
+//                onClear();
+//            } else if (response.startsWith("ERROR|")) {
+//                showAlert("Ошибка", response.substring(6));
+//            }
+//        } catch (IOException e) {
+//            showAlert("Ошибка", "Ошибка при обновлении записи.");
+//        }
+//    }
 
     private final ObservableList<StudentData> student = FXCollections.observableArrayList();
 
@@ -130,17 +172,24 @@ public class dashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //инициализация
-        students_col_ID.setCellValueFactory(new PropertyValueFactory<>("studentID"));
-        students_col_date.setCellValueFactory(new PropertyValueFactory<>("date"));
-        students_col_discipline.setCellValueFactory(new PropertyValueFactory<>("discipline"));
-        students_col_group.setCellValueFactory(new PropertyValueFactory<>("groupID"));
-        students_col_firstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        students_col_lastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        students_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
-        students_col_note.setCellValueFactory(new PropertyValueFactory<>("note"));
 
-        students_tableView.setItems(student);
+        studentShowListData();
+        studentStatusList();
+
+    }
+
+    public void studentShowListData() {
+        //инициализация
+        studentsColStudentID.setCellValueFactory(new PropertyValueFactory<>("studentID"));
+        studentsColDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        studentsColDiscipline.setCellValueFactory(new PropertyValueFactory<>("discipline"));
+        studentsColGroupID.setCellValueFactory(new PropertyValueFactory<>("groupID"));
+        studentsColFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        studentsColLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        studentsColStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+        studentsColNote.setCellValueFactory(new PropertyValueFactory<>("note"));
+
+        studentsTableView.setItems(student);
 
         //подключение
         try {
@@ -152,11 +201,10 @@ public class dashboardController implements Initializable {
             e.printStackTrace();
             showAlert("Connection Error", "Не удалось подключиться к серверу.");
         }
-
     }
 
     private void refreshTable() {
-        out.println("GET_USERS");
+        out.println("GET");
         try {
             String response = in.readLine();
             if ("ERROR".equals(response)) {
@@ -188,31 +236,17 @@ public class dashboardController implements Initializable {
         }
     }
 
-    private void loadDataFromServer() {
-        try (Socket socket = new Socket("127.0.0.1", 2048);
-             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+    private String[] listStatus = {"Присутствовал", "Отсутствовал"};
+    public void studentStatusList() {
+        List<String> listS = new ArrayList<> ();
 
-            // Отправляем команду серверу
-            out.println("SET_STUDENTS");
-
-            // Получаем JSON с сервера
-            String jsonData = in.readLine();
-
-            // Преобразуем JSON в список объектов
-            Gson gson = new Gson();
-            Type listType = new TypeToken<List<StudentData>>() {}.getType();
-            List<StudentData> students = gson.fromJson(jsonData, listType);
-
-            // Добавляем данные в таблицу
-            ObservableList<StudentData> data = FXCollections.observableArrayList(students);
-            students_tableView.setItems(data);
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        for (String data : listStatus) {
+            listS.add(data);
         }
-    }
 
+        ObservableList listData = FXCollections.observableArrayList(listS);
+        studentsChoiceBoxStatus.setItems(listData);
+    }
 
     public void switchForm(ActionEvent event) {
         if (event.getSource() == home_btn) {
@@ -223,6 +257,31 @@ public class dashboardController implements Initializable {
             students_form.setVisible(true);
         }
 
+    }
+
+    public void onTableClick(javafx.scene.input.MouseEvent mouseEvent) {
+        if (mouseEvent.getClickCount() == 2) { // Для двойного клика
+            StudentData selected = studentsTableView.getSelectionModel().getSelectedItem();
+            if (selected != null) {
+                System.out.println("StudentID: " + selected.getStudentID());
+                System.out.println("Date: " + selected.getDate());
+                System.out.println("Discipline: " + selected.getDiscipline());
+                System.out.println("GroupID: " + selected.getGroupID());
+                System.out.println("FirstName: " + selected.getFirstName());
+                System.out.println("LastName: " + selected.getLastName());
+                System.out.println("Status: " + selected.getStatus());
+                System.out.println("Note: " + selected.getNote());
+
+                studentsFieldStudentID.setText(String.valueOf(selected.getStudentID()));
+                studentsFieldDate.setText(selected.getDate());
+                studentsFieldDiscipline.setText(selected.getDiscipline());
+                studentsFieldGroupID.setText(selected.getGroupID());
+                studentsFieldFirstName.setText(selected.getFirstName());
+                studentsFieldLastName.setText(selected.getLastName());
+                studentsChoiceBoxStatus.setValue(selected.getStatus());
+                studentsFieldNote.setText(selected.getNote());
+            }
+        }
     }
 
     private void showAlert(String title, String message) {

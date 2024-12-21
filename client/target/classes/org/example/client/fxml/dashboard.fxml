@@ -130,16 +130,16 @@
                                                                         <Insets left="10.0" right="10.0" top="10.0" />
                                                                     </VBox.margin>
                                                                 </AnchorPane>
-                                                                <TableView fx:id="students_tableView" prefHeight="244.0" prefWidth="854.0" stylesheets="@../css/main.css">
+                                                                <TableView fx:id="studentsTableView" onMouseClicked="#onTableClick" prefHeight="244.0" prefWidth="854.0" stylesheets="@../css/main.css">
                                                                     <columns>
-                                                                        <TableColumn fx:id="students_col_ID" prefWidth="74.39997708797455" text="StudentID" />
-                                                                        <TableColumn fx:id="students_col_date" prefWidth="87.20001983642578" text="Date" />
-                                                                        <TableColumn fx:id="students_col_discipline" prefWidth="91.99993896484375" text="Discipline" />
-                                                                        <TableColumn fx:id="students_col_group" prefWidth="64.0" text="Group" />
-                                                                        <TableColumn fx:id="students_col_firstName" prefWidth="115.20001220703125" text="First Name" />
-                                                                        <TableColumn fx:id="students_col_lastName" prefWidth="110.39999389648438" text="Last Name" />
-                                                                        <TableColumn fx:id="students_col_status" prefWidth="58.4000244140625" text="Status" />
-                                                                        <TableColumn fx:id="students_col_note" prefWidth="253.60003662109375" text="Note" />
+                                                                        <TableColumn fx:id="studentsColStudentID" prefWidth="74.0" text="StudentID" />
+                                                                        <TableColumn fx:id="studentsColDate" prefWidth="87.0" text="Date" />
+                                                                        <TableColumn fx:id="studentsColDiscipline" prefWidth="92.0" text="Discipline" />
+                                                                        <TableColumn fx:id="studentsColGroupID" prefWidth="64.0" text="Group" />
+                                                                        <TableColumn fx:id="studentsColFirstName" prefWidth="115.0" text="First Name" />
+                                                                        <TableColumn fx:id="studentsColLastName" prefWidth="110.0" text="Last Name" />
+                                                                        <TableColumn fx:id="studentsColStatus" text="Status" />
+                                                                        <TableColumn fx:id="studentsColNote" prefWidth="229.0" text="Note" />
                                                                     </columns>
                                                                     <VBox.margin>
                                                                         <Insets bottom="10.0" left="10.0" right="10.0" top="15.0" />
@@ -166,7 +166,7 @@
                                                                                         <Insets right="5.0" />
                                                                                     </HBox.margin>
                                                                                 </Label>
-                                                                                <TextField fx:id="students_studentsID" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                                                <TextField fx:id="studentsFieldStudentID" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
                                                                             </children>
                                                                             <padding>
                                                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
@@ -179,7 +179,7 @@
                                                                                         <Insets right="5.0" />
                                                                                     </HBox.margin>
                                                                                 </Label>
-                                                                                <TextField fx:id="students_date" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                                                <TextField fx:id="studentsFieldDate" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
                                                                             </children>
                                                                             <padding>
                                                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
@@ -192,7 +192,7 @@
                                                                                         <Insets right="5.0" />
                                                                                     </HBox.margin>
                                                                                 </Label>
-                                                                                <TextField fx:id="students_discipline" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                                                <TextField fx:id="studentsFieldDiscipline" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
                                                                             </children>
                                                                             <padding>
                                                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
@@ -205,7 +205,7 @@
                                                                                         <Insets right="5.0" />
                                                                                     </HBox.margin>
                                                                                 </Label>
-                                                                                <TextField fx:id="students_group" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                                                <TextField fx:id="studentsFieldGroupID" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
                                                                             </children>
                                                                             <padding>
                                                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
@@ -228,7 +228,7 @@
                                                                                         <Insets right="5.0" />
                                                                                     </HBox.margin>
                                                                                 </Label>
-                                                                                <TextField fx:id="students_firstName" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                                                <TextField fx:id="studentsFieldFirstName" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
                                                                             </children>
                                                                             <padding>
                                                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
@@ -241,7 +241,7 @@
                                                                                         <Insets right="5.0" />
                                                                                     </HBox.margin>
                                                                                 </Label>
-                                                                                <TextField fx:id="students_lastName" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                                                <TextField fx:id="studentsFieldLastName" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
                                                                             </children>
                                                                             <padding>
                                                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
@@ -254,7 +254,7 @@
                                                                                         <Insets right="5.0" />
                                                                                     </HBox.margin>
                                                                                 </Label>
-                                                                                <ChoiceBox fx:id="students_status" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                                                <ChoiceBox fx:id="studentsChoiceBoxStatus" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
                                                                             </children>
                                                                             <padding>
                                                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
@@ -274,7 +274,7 @@
                                                                                         <Insets right="5.0" />
                                                                                     </HBox.margin>
                                                                                 </Label>
-                                                                                <TextField fx:id="students_note" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                                                <TextField fx:id="studentsFieldNote" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
                                                                             </children>
                                                                             <padding>
                                                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
@@ -294,7 +294,7 @@
                                                             <children>
                                                                 <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="437.0">
                                                                     <children>
-                                                                        <Button fx:id="students_clearBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="125.0" styleClass="clear-btn" stylesheets="@../css/main.css" text="Clear">
+                                                                        <Button fx:id="students_clearBtn" mnemonicParsing="false" onAction="#studentsBtnClear" prefHeight="50.0" prefWidth="125.0" styleClass="clear-btn" stylesheets="@../css/main.css" text="Clear">
                                                                             <HBox.margin>
                                                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                                             </HBox.margin>
@@ -316,7 +316,7 @@
                                                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                                             </HBox.margin>
                                                                         </Button>
-                                                                        <Button fx:id="students_addBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="125.0" styleClass="add-btn" stylesheets="@../css/main.css" text="Add">
+                                                                        <Button fx:id="students_addBtn" mnemonicParsing="false" onAction="#studentsBtnAdd" prefHeight="50.0" prefWidth="125.0" styleClass="add-btn" stylesheets="@../css/main.css" text="Add">
                                                                             <HBox.margin>
                                                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                                             </HBox.margin>
