@@ -1,6 +1,7 @@
 module org.example.client {
     requires javafx.controls;
     requires javafx.fxml;
+    requires org.example.shared; // Указываем зависимость на shared
 
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.javafx;

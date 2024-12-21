@@ -1,22 +1,27 @@
 package org.example.client;
 
 import com.google.gson.Gson;
-
+import com.google.gson.reflect.TypeToken;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.Initializable;
-
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import org.example.shared.StudentData;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.lang.reflect.Type;
 import java.net.Socket;
 import java.net.URL;
+import java.sql.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class dashboardController implements Initializable {
@@ -43,28 +48,31 @@ public class dashboardController implements Initializable {
     private Button students_clearBtn;
 
     @FXML
-    private TableColumn<?, ?> students_col_ID;
+    private TableView<StudentData> students_tableView;
 
     @FXML
-    private TableColumn<?, ?> students_col_date;
+    private TableColumn<StudentData, Integer> students_col_ID;
 
     @FXML
-    private TableColumn<?, ?> students_col_descipline;
+    private TableColumn<StudentData, Date> students_col_date;
 
     @FXML
-    private TableColumn<?, ?> students_col_firstName;
+    private TableColumn<StudentData, String> students_col_discipline;
 
     @FXML
-    private TableColumn<?, ?> students_col_group;
+    private TableColumn<StudentData, String> students_col_firstName;
 
     @FXML
-    private TableColumn<?, ?> students_col_lastName;
+    private TableColumn<StudentData, String> students_col_group;
 
     @FXML
-    private TableColumn<?, ?> students_col_note;
+    private TableColumn<StudentData, String> students_col_lastName;
 
     @FXML
-    private TableColumn<?, ?> students_col_status;
+    private TableColumn<StudentData, String> students_col_note;
+
+    @FXML
+    private TableColumn<StudentData, String> students_col_status;
 
     @FXML
     private TextField students_date;
@@ -100,9 +108,6 @@ public class dashboardController implements Initializable {
     private TextField students_studentsID;
 
     @FXML
-    private AnchorPane students_tableView;
-
-    @FXML
     private Button students_updateBtn;
 
     @FXML
@@ -117,28 +122,74 @@ public class dashboardController implements Initializable {
     @FXML
     private Button sendCommandBtn;
 
+    private final ObservableList<StudentData> student = FXCollections.observableArrayList();
+
+    private Socket socket;
+    private BufferedReader in;
+    private PrintWriter out;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        students_addBtn.setOnAction(event -> {
-            try (Socket socket = new Socket("127.0.0.1", 2048);
-                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+        //инициализация
+        students_col_ID.setCellValueFactory(new PropertyValueFactory<>("studentID"));
+        students_col_date.setCellValueFactory(new PropertyValueFactory<>("date"));
+        students_col_discipline.setCellValueFactory(new PropertyValueFactory<>("discipline"));
+        students_col_group.setCellValueFactory(new PropertyValueFactory<>("groupID"));
+        students_col_firstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        students_col_lastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        students_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        students_col_note.setCellValueFactory(new PropertyValueFactory<>("note"));
 
-                // Отправка команды на сервер
-                out.println("GET_DATA");
+        students_tableView.setItems(student);
 
-                // Получение ответа от сервера
-                String response = in.readLine();
-                // Обработка ответа и обновление интерфейса
-                textArea.setText(response);
-            } catch (IOException e) {
-                e.printStackTrace();
+        //подключение
+        try {
+            socket = new Socket("127.0.0.1", 2048);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new PrintWriter(socket.getOutputStream(), true);
+            refreshTable();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Connection Error", "Не удалось подключиться к серверу.");
+        }
+
+    }
+
+    private void refreshTable() {
+        out.println("GET_USERS");
+        try {
+            String response = in.readLine();
+            if ("ERROR".equals(response)) {
+                showAlert("Error", "Failed to retrieve users.");
+                return;
             }
-        });
+
+            student.clear();
+            if (!response.isEmpty()) {
+                String[] userEntries = response.split(";");
+                for (String entry : userEntries) {
+                    String[] fields = entry.split(",");
+                    if (fields.length == 8) {
+                        int studentID = Integer.parseInt(fields[0]);
+                        Date date = Date.valueOf(fields[1]);
+                        String discipline = fields[2];
+                        String groupID = fields[3];
+                        String firstName = fields[4];
+                        String lastName = fields[5];
+                        String status = fields[6];
+                        String note = fields[7];
+                        student.add(new StudentData(studentID, date, discipline, groupID, firstName, lastName, status, note));
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Communication Error", "Ошибка связи с сервером.");
+        }
     }
 
     private void loadDataFromServer() {
-        try (Socket socket = new Socket("localhost", 2048);
+        try (Socket socket = new Socket("127.0.0.1", 2048);
              PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
              BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
 
@@ -155,19 +206,13 @@ public class dashboardController implements Initializable {
 
             // Добавляем данные в таблицу
             ObservableList<StudentData> data = FXCollections.observableArrayList(students);
-            tableView.setItems(data);
+            students_tableView.setItems(data);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-
-
-    public void addStudentAdd{
-        Date student = new Date();
-        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-    }
 
     public void switchForm(ActionEvent event) {
         if (event.getSource() == home_btn) {
@@ -178,5 +223,13 @@ public class dashboardController implements Initializable {
             students_form.setVisible(true);
         }
 
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
