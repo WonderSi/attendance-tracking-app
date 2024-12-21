@@ -7,6 +7,8 @@ module org.example.client {
     requires org.kordamp.bootstrapfx.core;
     requires jdk.compiler;
     requires de.jensd.fx.glyphs.fontawesome;
+    requires java.sql;
+    requires com.google.gson;
 
     opens org.example.client to javafx.fxml;
     exports org.example.client;

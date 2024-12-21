@@ -1,5 +1,7 @@
 package org.example.client;
 
+import com.google.gson.Gson;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
@@ -117,22 +119,54 @@ public class dashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        students_addBtn.setOnAction(event -> {
-//            try (Socket socket = new Socket("127.0.0.1", 2048);
-//                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-//                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-//
-//                // Отправка команды на сервер
-//                out.println("GET_DATA");
-//
-//                // Получение ответа от сервера
-//                String response = in.readLine();
-//                // Обработка ответа и обновление интерфейса
-//                textArea.setText(response);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        });
+        students_addBtn.setOnAction(event -> {
+            try (Socket socket = new Socket("127.0.0.1", 2048);
+                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+
+                // Отправка команды на сервер
+                out.println("GET_DATA");
+
+                // Получение ответа от сервера
+                String response = in.readLine();
+                // Обработка ответа и обновление интерфейса
+                textArea.setText(response);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void loadDataFromServer() {
+        try (Socket socket = new Socket("localhost", 2048);
+             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+
+            // Отправляем команду серверу
+            out.println("SET_STUDENTS");
+
+            // Получаем JSON с сервера
+            String jsonData = in.readLine();
+
+            // Преобразуем JSON в список объектов
+            Gson gson = new Gson();
+            Type listType = new TypeToken<List<StudentData>>() {}.getType();
+            List<StudentData> students = gson.fromJson(jsonData, listType);
+
+            // Добавляем данные в таблицу
+            ObservableList<StudentData> data = FXCollections.observableArrayList(students);
+            tableView.setItems(data);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    public void addStudentAdd{
+        Date student = new Date();
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
     }
 
     public void switchForm(ActionEvent event) {
