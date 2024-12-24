@@ -1,7 +1,5 @@
 package org.example.client;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,12 +11,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import org.example.shared.StudentData;
 
-import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.lang.reflect.Type;
 import java.net.Socket;
 import java.net.URL;
 import java.sql.Date;
@@ -65,11 +61,17 @@ public class dashboardController implements Initializable {
     @FXML private TextField studentsFieldGroupID;
     @FXML private TextField studentsFieldFirstName;
     @FXML private TextField studentsFieldLastName;
-    @FXML private ChoiceBox studentsChoiceBoxStatus;
+    @FXML private ComboBox studentsComboBoxStatus;
     @FXML private TextField studentsFieldNote;
 
     @FXML
-    private TextField studentsSearchField;
+    private TextField studentsFieldSearch;
+    @FXML
+    private ComboBox studentsComboBoxFilterOne;
+    @FXML
+    private ComboBox studentsComboBoxFilterTwo;
+    @FXML
+    private ComboBox studentsComboBoxFilterThree;
 
     @FXML
     private Button students_deleteBtn;
@@ -98,6 +100,9 @@ public class dashboardController implements Initializable {
 
         studentShowListData();
         studentStatusList();
+        studentFilterListOne();
+        studentFilterListTwo();
+        studentFilterListThree();
 
     }
 
@@ -159,6 +164,7 @@ public class dashboardController implements Initializable {
         }
     }
 
+
     private String[] listStatus = {"Присутствовал", "Отсутствовал"};
     public void studentStatusList() {
         List<String> listS = new ArrayList<> ();
@@ -168,8 +174,48 @@ public class dashboardController implements Initializable {
         }
 
         ObservableList listData = FXCollections.observableArrayList(listS);
-        studentsChoiceBoxStatus.setItems(listData);
+        studentsComboBoxStatus.setItems(listData);
     }
+
+    private String[] listFilterOne = {"Все", "Математика", "Информатика", "Русский"};
+    public void studentFilterListOne() {
+        List<String> listS = new ArrayList<> ();
+
+        for (String data : listFilterOne) {
+            listS.add(data);
+        }
+
+        ObservableList listData = FXCollections.observableArrayList(listS);
+        studentsComboBoxFilterOne.setItems(listData);
+        studentsComboBoxFilterOne.getSelectionModel().select("Все");
+    }
+    private String[] listFilterTwo = {"Все", "ФИТ-231", "МОА-231", "ПМИ-231", "КБ-231", "ПИ-231"};
+    public void studentFilterListTwo() {
+        List<String> listS = new ArrayList<> ();
+
+        for (String data : listFilterTwo) {
+            listS.add(data);
+        }
+
+        ObservableList listData = FXCollections.observableArrayList(listS);
+        studentsComboBoxFilterTwo.setItems(listData);
+        studentsComboBoxFilterTwo.getSelectionModel().select("Все");
+    }
+    private String[] listFilterThree = {"Все", "Присутствовал", "Отсутствовал"};
+    public void studentFilterListThree() {
+        List<String> listS = new ArrayList<> ();
+
+        for (String data : listFilterThree) {
+            listS.add(data);
+        }
+
+        ObservableList listData = FXCollections.observableArrayList(listS);
+        studentsComboBoxFilterThree.setItems(listData);
+        studentsComboBoxFilterThree.getSelectionModel().select("Все");
+    }
+
+
+
 
     public void switchForm(ActionEvent event) {
         if (event.getSource() == home_btn) {
@@ -201,30 +247,54 @@ public class dashboardController implements Initializable {
                 studentsFieldGroupID.setText(selected.getGroupID());
                 studentsFieldFirstName.setText(selected.getFirstName());
                 studentsFieldLastName.setText(selected.getLastName());
-                studentsChoiceBoxStatus.setValue(selected.getStatus());
+                studentsComboBoxStatus.setValue(selected.getStatus());
                 studentsFieldNote.setText(selected.getNote());
             }
         }
     }
 
 
+    private void applyFilterAndSearch() {
+        String keyword = studentsFieldSearch.getText().toLowerCase();
+        String filter1 = (String) studentsComboBoxFilterOne.getSelectionModel().getSelectedItem();
+        String filter2 = (String) studentsComboBoxFilterTwo.getSelectionModel().getSelectedItem();
+        String filter3 = (String) studentsComboBoxFilterThree.getSelectionModel().getSelectedItem();
+
+        studentsTableView.setItems(student.filtered(student -> {
+            // Проверка поиска
+            boolean matchesKeyword = student.getFirstName().toLowerCase().contains(keyword) ||
+                    student.getLastName().toLowerCase().contains(keyword) ||
+                    student.getDiscipline().toLowerCase().contains(keyword);
+
+            // Проверка первого фильтра
+            boolean matchesFilterOne = filter1 == null || filter1.equals("Все") || student.getDiscipline().equals(filter1);
+
+            // Проверка второго фильтра
+            boolean matchesFilterTwo = filter2 == null || filter2.equals("Все") || student.getGroupID().equals(filter2);
+
+            // Проверка третьего фильтра
+            boolean matchesFilterThree = filter3 == null || filter3.equals("Все") || student.getStatus().equals(filter3);
+
+            // Возвращаем результат: поиск + все активные фильтры
+            return matchesKeyword && matchesFilterOne && matchesFilterTwo && matchesFilterThree;
+        }));
+    }
+
     @FXML
     private void onSearch() {
-        String keyword = studentsSearchField.getText().toLowerCase();
-        studentsTableView.setItems(student.filtered(student ->
-                student.getFirstName().toLowerCase().contains(keyword) ||
-                        student.getLastName().toLowerCase().contains(keyword) ||
-                        student.getDiscipline().toLowerCase().contains(keyword)
-        ));
+        applyFilterAndSearch();
     }
     @FXML
-    private void onFilter() {
-        String filter = studentFilterComboBox.getSelectionModel().getSelectedItem();
-        if (filter.equals("Все")) {
-            studentsTableView.setItems(student);
-        } else {
-            studentsTableView.setItems(student.filtered(student -> student.getStatus().equals(filter)));
-        }
+    private void onFilterOne() {
+        applyFilterAndSearch();
+    }
+    @FXML
+    private void onFilterTwo() {
+        applyFilterAndSearch();
+    }
+    @FXML
+    private void onFilterThree() {
+        applyFilterAndSearch();
     }
 
     @FXML
@@ -235,7 +305,7 @@ public class dashboardController implements Initializable {
         studentsFieldGroupID.clear();
         studentsFieldFirstName.clear();
         studentsFieldLastName.clear();
-        studentsChoiceBoxStatus.getSelectionModel().clearSelection();
+        studentsComboBoxStatus.getSelectionModel().clearSelection();
         studentsFieldNote.clear();
     };
     @FXML
@@ -278,7 +348,7 @@ public class dashboardController implements Initializable {
         String groupID = studentsFieldGroupID.getText();
         String firstName = studentsFieldFirstName.getText();
         String lastName = studentsFieldLastName.getText();
-        String status = (String) studentsChoiceBoxStatus.getValue();
+        String status = (String) studentsComboBoxStatus.getValue();
         String note = studentsFieldNote.getText();
 
         String command = String.join("|", "UPDATE", studentID, date, discipline, groupID, firstName, lastName, status, note);
@@ -304,7 +374,7 @@ public class dashboardController implements Initializable {
         String groupID = studentsFieldGroupID.getText();
         String firstName = studentsFieldFirstName.getText();
         String lastName = studentsFieldLastName.getText();
-        String status = (String) studentsChoiceBoxStatus.getValue();
+        String status = (String) studentsComboBoxStatus.getValue();
         String note = studentsFieldNote.getText();
         note = (note.isEmpty()) ? " " : note;
 

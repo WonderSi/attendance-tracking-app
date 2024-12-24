@@ -7,10 +7,11 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -121,15 +122,48 @@
                                                     <children>
                                                         <VBox prefHeight="328.0" prefWidth="874.0" stylesheets="@../css/main.css">
                                                             <children>
-                                                                <AnchorPane prefHeight="30.0" prefWidth="874.0">
-                                                                    <children>
-                                                                        <TextField fx:id="studentsSearchField" layoutY="1.0" prefHeight="30.0" prefWidth="200.0" promptText="Search" styleClass="search" stylesheets="@../css/main.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="654.0" AnchorPane.topAnchor="0.0" />
-                                                                        <FontAwesomeIconView glyphName="SEARCH" layoutX="7.0" layoutY="21.0" size="20" />
-                                                                    </children>
-                                                                    <VBox.margin>
-                                                                        <Insets left="10.0" right="10.0" top="10.0" />
-                                                                    </VBox.margin>
-                                                                </AnchorPane>
+                                                <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="874.0">
+                                                   <children>
+                                                      <AnchorPane prefHeight="30.0" prefWidth="200.0">
+                                                         <children>
+                                                                              <TextField fx:id="studentsFieldSearch" layoutX="1.0" layoutY="1.0" onAction="#onSearch" prefHeight="30.0" prefWidth="200.0" promptText="Search" styleClass="search" stylesheets="@../css/main.css" />
+                                                            <FontAwesomeIconView fill="#59bed9" glyphName="SEARCH" layoutX="9.0" layoutY="22.0" selectionEnd="0" size="20" text="" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <Label text="Discipline:">
+                                                         <HBox.margin>
+                                                            <Insets left="25.0" />
+                                                         </HBox.margin>
+                                                      </Label>
+                                                      <ComboBox fx:id="studentsComboBoxFilterOne" onAction="#onFilterOne" prefHeight="30.0" prefWidth="125.0" stylesheets="@../css/main.css">
+                                                         <HBox.margin>
+                                                            <Insets left="5.0" />
+                                                         </HBox.margin></ComboBox>
+                                                      <Label text="Group:">
+                                                         <HBox.margin>
+                                                            <Insets left="25.0" />
+                                                         </HBox.margin>
+                                                      </Label>
+                                                      <ComboBox fx:id="studentsComboBoxFilterTwo" onAction="#onFilterTwo" prefHeight="30.0" prefWidth="125.0" stylesheets="@../css/main.css">
+                                                         <HBox.margin>
+                                                            <Insets left="5.0" />
+                                                         </HBox.margin>
+                                                      </ComboBox>
+                                                      <Label text="Status:">
+                                                         <HBox.margin>
+                                                            <Insets left="25.0" />
+                                                         </HBox.margin>
+                                                      </Label>
+                                                      <ComboBox fx:id="studentsComboBoxFilterThree" onAction="#onFilterThree" prefHeight="30.0" prefWidth="125.0" stylesheets="@../css/main.css">
+                                                         <HBox.margin>
+                                                            <Insets left="5.0" />
+                                                         </HBox.margin>
+                                                      </ComboBox>
+                                                   </children>
+                                                   <VBox.margin>
+                                                      <Insets left="10.0" right="10.0" top="10.0" />
+                                                   </VBox.margin>
+                                                </HBox>
                                                                 <TableView fx:id="studentsTableView" onMouseClicked="#onTableClick" prefHeight="244.0" prefWidth="854.0" stylesheets="@../css/main.css">
                                                                     <columns>
                                                                         <TableColumn fx:id="studentsColStudentID" prefWidth="74.0" text="StudentID" />
@@ -139,10 +173,10 @@
                                                                         <TableColumn fx:id="studentsColFirstName" prefWidth="115.0" text="First Name" />
                                                                         <TableColumn fx:id="studentsColLastName" prefWidth="110.0" text="Last Name" />
                                                                         <TableColumn fx:id="studentsColStatus" text="Status" />
-                                                                        <TableColumn fx:id="studentsColNote" prefWidth="229.0" text="Note" />
+                                                                        <TableColumn fx:id="studentsColNote" maxWidth="330.0" prefWidth="226.0" text="Note" />
                                                                     </columns>
                                                                     <VBox.margin>
-                                                                        <Insets bottom="10.0" left="10.0" right="10.0" top="15.0" />
+                                                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                                     </VBox.margin>
                                                                     <styleClass>
                                                                         <String fx:value="table-view" />
@@ -254,7 +288,7 @@
                                                                                         <Insets right="5.0" />
                                                                                     </HBox.margin>
                                                                                 </Label>
-                                                                                <ChoiceBox fx:id="studentsChoiceBoxStatus" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                            <ComboBox fx:id="studentsComboBoxStatus" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
                                                                             </children>
                                                                             <padding>
                                                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
@@ -275,6 +309,8 @@
                                                                                     </HBox.margin>
                                                                                 </Label>
                                                                                 <TextField fx:id="studentsFieldNote" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                            <TextArea prefHeight="200.0" prefWidth="200.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                            <TextField />
                                                                             </children>
                                                                             <padding>
                                                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
