@@ -89,12 +89,11 @@ public class dashboardController implements Initializable {
     private Button students_updateBtn;
     @FXML
     private Label username;
+
     @FXML
-    private TextArea serverMessages;
+    private AnchorPane reports_form;
     @FXML
-    private TextField commandInput;
-    @FXML
-    private Button sendCommandBtn;
+    private Button reports_btn;
 
     private final ObservableList<StudentData> student = FXCollections.observableArrayList();
 
@@ -283,9 +282,15 @@ public class dashboardController implements Initializable {
         if (event.getSource() == home_btn) {
             home_form.setVisible(true);
             students_form.setVisible(false);
+            reports_form.setVisible(false);
         } else if (event.getSource() == students_btn) {
             home_form.setVisible(false);
             students_form.setVisible(true);
+            reports_form.setVisible(false);
+        } else if (event.getSource() == reports_btn) {
+            home_form.setVisible(false);
+            students_form.setVisible(false);
+            reports_form.setVisible(true);
         }
 
     }

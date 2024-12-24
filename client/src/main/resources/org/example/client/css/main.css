@@ -202,3 +202,7 @@
     -fx-font-size: 18px;
     -fx-font-weight: bold;
 }
+
+.default-color0.chart-bar {
+    -fx-bar-fill: #59bed9; /* Цвет для первой серии */
+}
