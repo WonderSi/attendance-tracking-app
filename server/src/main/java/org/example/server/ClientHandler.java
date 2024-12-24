@@ -49,10 +49,10 @@ class ClientHandler implements Runnable {
                         handleAdd(parts);
                         break;
                     case "UPDATE":
-                        handleUpdate(parts);
+                        if (parts.length == 9) {
+                            updateUser(Integer.parseInt(parts[1]), parts[2], parts[3], parts[4], parts[5], parts[6], parts[7], parts[8]);
+                        }
                         break;
-                    case "DELETE":
-                        handleDelete(parts);
                     default:
                         out.println("UNKNOWN_COMMAND");
                 }
@@ -104,15 +104,7 @@ class ClientHandler implements Runnable {
     private void handleAdd(String[] parts) {
         try {
             // Ожидается формат: ADD|Date|Discipline|GroupID|FirstName|LastName|Status|Note
-            String query = "INSERT INTO student (" +
-                    "date, " +
-                    "discipline, " +
-                    "group_id, " +
-                    "first_name, " +
-                    "last_name, " +
-                    "status, " +
-                    "note" +
-                    ") VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO student (date, discipline, group_id, first_name, last_name, status, note) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = connect.prepareStatement(query);
             pstmt.setString(1, parts[1]);
             pstmt.setString(2, parts[2]);
@@ -128,53 +120,31 @@ class ClientHandler implements Runnable {
         }
     }
 
-    private void handleUpdate(String[] parts) {
+    private void updateUser(int studentID, String date, String discilpine, String groupID, String firstName, String lastName, String status, String note) {
         try {
-            // Ожидается формат: UPDATE|StudentID|Date|Discipline|GroupID|FirstName|LastName|Status|Note
-            String query = "UPDATE student SET " +
-                    "date = ?, " +
-                    "discipline = ?, " +
-                    "group_id = ?, " +
-                    "first_name = ?, " +
-                    "last_name = ?, " +
-                    "status = ?, " +
-                    "note = ?" +
-                    "WHERE student_id = ?";
-            PreparedStatement pstmt = connect.prepareStatement(query);
-            pstmt.setString(1, parts[2]);
-            pstmt.setString(2, parts[3]);
-            pstmt.setString(3, parts[4]);
-            pstmt.setString(4, parts[5]);
-            pstmt.setString(5, parts[6]);
-            pstmt.setString(6, parts[7]);
-            pstmt.setString(7, parts[8]);
-            pstmt.setString(8, parts[1]);
-            int rowsAffected = pstmt.executeUpdate();
-            if (rowsAffected > 0) {
-                out.println("SUCCESS|Запись обновлена");
-            } else {
-                out.println("ERROR|Запись не найдена");
-            }
+            PreparedStatement pstmt = connect.prepareStatement(
+                    "UPDATE student SET " +
+                            "date = ?, " +
+                            "discipline = ?, " +
+                            "group_id = ?, " +
+                            "first_name = ?, " +
+                            "last_name = ?, " +
+                            "status = ?, " +
+                            "note = ?," +
+                            "WHERE student_id = ?");
+            pstmt.setString(1, date);
+            pstmt.setString(2, discilpine);
+            pstmt.setString(3, groupID);
+            pstmt.setString(4, firstName);
+            pstmt.setString(5, lastName);
+            pstmt.setString(6, status);
+            pstmt.setString(7, note);
+            pstmt.setInt(8, studentID);
+            pstmt.executeUpdate();
+            out.println("SUCCESS");
         } catch (SQLException e) {
             e.printStackTrace();
-            out.println("ERROR|" + e.getMessage());
-        }
-    }
-
-    private void handleDelete(String[] parts) {
-        try {
-            // Ожидается формат: DELETE|StudentID
-            String query = "DELETE FROM student WHERE student_id=?";
-            PreparedStatement pstmt = connect.prepareStatement(query);
-            pstmt.setInt(1, Integer.parseInt(parts[1]));
-            int rowsAffected = pstmt.executeUpdate();
-            if (rowsAffected > 0) {
-                out.println("SUCCESS|Запись удалена");
-            } else {
-                out.println("ERROR|Запись не найдена");
-            }
-        } catch (SQLException e) {
-            out.println("ERROR|" + e.getMessage());
+            out.println("ERROR");
         }
     }
 }
