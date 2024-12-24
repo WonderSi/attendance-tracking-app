@@ -84,7 +84,7 @@
                     <center>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                             <children>
-                                <AnchorPane fx:id="home_form" layoutX="176.0" layoutY="157.0" prefHeight="600.0" prefWidth="900.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <AnchorPane fx:id="home_form" layoutX="176.0" layoutY="157.0" prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane layoutX="13.0" layoutY="10.0" prefHeight="578.0" prefWidth="874.0" stylesheets="@../css/main.css">
                                  <children>
@@ -167,21 +167,21 @@
                                                                 <TableView fx:id="studentsTableView" onMouseClicked="#onTableClick" prefHeight="244.0" prefWidth="854.0" stylesheets="@../css/main.css">
                                                                     <columns>
                                                                         <TableColumn fx:id="studentsColStudentID" prefWidth="74.0" text="StudentID" />
-                                                                        <TableColumn fx:id="studentsColDate" prefWidth="87.0" text="Date" />
-                                                                        <TableColumn fx:id="studentsColDiscipline" prefWidth="92.0" text="Discipline" />
-                                                                        <TableColumn fx:id="studentsColGroupID" prefWidth="64.0" text="Group" />
-                                                                        <TableColumn fx:id="studentsColFirstName" prefWidth="115.0" text="First Name" />
-                                                                        <TableColumn fx:id="studentsColLastName" prefWidth="110.0" text="Last Name" />
-                                                                        <TableColumn fx:id="studentsColStatus" text="Status" />
-                                                                        <TableColumn fx:id="studentsColNote" maxWidth="330.0" prefWidth="226.0" text="Note" />
+                                                                        <TableColumn fx:id="studentsColDate" prefWidth="79.20001983642578" text="Date" />
+                                                                        <TableColumn fx:id="studentsColDiscipline" prefWidth="85.5999755859375" text="Discipline" />
+                                                                        <TableColumn fx:id="studentsColGroupID" prefWidth="72.00003051757812" text="Group" />
+                                                                        <TableColumn fx:id="studentsColFirstName" prefWidth="120.800048828125" text="First Name" />
+                                                                        <TableColumn fx:id="studentsColLastName" prefWidth="146.39993286132812" text="Last Name" />
+                                                                        <TableColumn fx:id="studentsColStatus" prefWidth="101.60003662109375" text="Status" />
+                                                                        <TableColumn fx:id="studentsColNote" prefWidth="167.0" text="Note" />
                                                                     </columns>
                                                                     <VBox.margin>
                                                                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                                     </VBox.margin>
-                                                                    <styleClass>
-                                                                        <String fx:value="table-view" />
-                                                                        <String fx:value="column-header-background" />
-                                                                    </styleClass>
+                                                   <styleClass>
+                                                      <String fx:value="column-header-background" />
+                                                      <String fx:value="table-view" />
+                                                   </styleClass>
                                                                 </TableView>
                                                             </children>
                                                             <styleClass>

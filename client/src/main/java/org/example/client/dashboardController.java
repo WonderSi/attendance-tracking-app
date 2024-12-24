@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import org.example.shared.StudentData;
 
@@ -104,6 +105,7 @@ public class dashboardController implements Initializable {
         studentFilterListTwo();
         studentFilterListThree();
 
+        studentsTableView.addEventFilter(ScrollEvent.ANY, event -> { if (event.getDeltaX() != 0) { event.consume(); } });
     }
 
     public void studentShowListData() {
