@@ -188,7 +188,7 @@
                               </AnchorPane>
                            </children>
                                 </AnchorPane>
-                                <AnchorPane fx:id="students_form" layoutX="71.0" layoutY="163.0" prefHeight="600.0" prefWidth="900.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <AnchorPane fx:id="students_form" layoutX="71.0" layoutY="163.0" prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
                                         <AnchorPane layoutX="13.0" layoutY="11.0" prefHeight="578.0" prefWidth="874.0" stylesheets="@../css/main.css">
                                             <children>
@@ -209,7 +209,7 @@
                                                             <Insets left="25.0" />
                                                          </HBox.margin>
                                                       </Label>
-                                                      <ComboBox fx:id="studentsComboBoxFilterOne" onAction="#onFilterOne" prefHeight="30.0" prefWidth="125.0" stylesheets="@../css/main.css">
+                                                      <ComboBox fx:id="studentsComboBoxFilterOne" onAction="#onFilterOne" prefHeight="30.0" prefWidth="125.0" styleClass="combobox" stylesheets="@../css/main.css">
                                                          <HBox.margin>
                                                             <Insets left="5.0" />
                                                          </HBox.margin></ComboBox>
@@ -218,7 +218,7 @@
                                                             <Insets left="25.0" />
                                                          </HBox.margin>
                                                       </Label>
-                                                      <ComboBox fx:id="studentsComboBoxFilterTwo" onAction="#onFilterTwo" prefHeight="30.0" prefWidth="125.0" stylesheets="@../css/main.css">
+                                                      <ComboBox fx:id="studentsComboBoxFilterTwo" onAction="#onFilterTwo" prefHeight="30.0" prefWidth="125.0" styleClass="combobox" stylesheets="@../css/main.css">
                                                          <HBox.margin>
                                                             <Insets left="5.0" />
                                                          </HBox.margin>
@@ -228,7 +228,7 @@
                                                             <Insets left="25.0" />
                                                          </HBox.margin>
                                                       </Label>
-                                                      <ComboBox fx:id="studentsComboBoxFilterThree" onAction="#onFilterThree" prefHeight="30.0" prefWidth="125.0" stylesheets="@../css/main.css">
+                                                      <ComboBox fx:id="studentsComboBoxFilterThree" onAction="#onFilterThree" prefHeight="30.0" prefWidth="125.0" styleClass="combobox" stylesheets="@../css/main.css">
                                                          <HBox.margin>
                                                             <Insets left="5.0" />
                                                          </HBox.margin>
@@ -244,10 +244,11 @@
                                                                         <TableColumn fx:id="studentsColDate" prefWidth="79.20001983642578" text="Date" />
                                                                         <TableColumn fx:id="studentsColDiscipline" prefWidth="85.5999755859375" text="Discipline" />
                                                                         <TableColumn fx:id="studentsColGroupID" prefWidth="72.00003051757812" text="Group" />
-                                                                        <TableColumn fx:id="studentsColFirstName" prefWidth="120.800048828125" text="First Name" />
-                                                                        <TableColumn fx:id="studentsColLastName" prefWidth="146.39993286132812" text="Last Name" />
-                                                                        <TableColumn fx:id="studentsColStatus" prefWidth="101.60003662109375" text="Status" />
-                                                                        <TableColumn fx:id="studentsColNote" prefWidth="167.0" text="Note" />
+                                                                        <TableColumn fx:id="studentsColFirstName" prefWidth="132.0" text="First Name" />
+                                                                        <TableColumn fx:id="studentsColLastName" prefWidth="115.19998168945312" text="Last Name" />
+                                                                        <TableColumn fx:id="studentsColStatus" prefWidth="100.0" text="Status" />
+                                                                        <TableColumn fx:id="studentsColNote" minWidth="0.0" prefWidth="148.79986572265625" text="Note" />
+                                                      <TableColumn fx:id="studentsColPoint" minWidth="0.0" prefWidth="45.60009765625" text="Point" />
                                                                     </columns>
                                                                     <VBox.margin>
                                                                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -368,23 +369,39 @@
                                                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
                                                                             </padding>
                                                                         </HBox>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="100.0">
+                                                         <children>
+                                                            <Label text="Point:">
+                                                               <HBox.margin>
+                                                                  <Insets right="5.0" />
+                                                               </HBox.margin>
+                                                            </Label>
+                                                         </children>
+                                                         <padding>
+                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+                                                         </padding>
+                                                         <VBox.margin>
+                                                            <Insets />
+                                                         </VBox.margin>
+                                                      </HBox>
                                                                     </children>
                                                                     <padding>
                                                                         <Insets top="15.0" />
                                                                     </padding>
+                                                   <HBox.margin>
+                                                      <Insets left="20.0" />
+                                                   </HBox.margin>
                                                                 </VBox>
-                                                                <VBox prefHeight="189.0" prefWidth="270.0">
+                                                                <VBox prefHeight="189.0" prefWidth="252.0">
                                                                     <children>
-                                                                        <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="100.0">
+                                                                        <HBox alignment="TOP_RIGHT" prefHeight="38.0" prefWidth="100.0">
                                                                             <children>
                                                                                 <Label text="Note:">
                                                                                     <HBox.margin>
-                                                                                        <Insets right="5.0" />
+                                                                                        <Insets right="5.0" top="5.0" />
                                                                                     </HBox.margin>
                                                                                 </Label>
-                                                                                <TextField fx:id="studentsFieldNote" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
-                                                            <TextArea prefHeight="200.0" prefWidth="200.0" styleClass="textfield" stylesheets="@../css/main.css" />
-                                                            <TextField />
+                                                            <TextField fx:id="studentsFieldNote" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
                                                                             </children>
                                                                             <padding>
                                                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
@@ -445,7 +462,7 @@
                                         </AnchorPane>
                                     </children>
                                 </AnchorPane>
-                        <AnchorPane fx:id="reports_form" prefHeight="600.0" prefWidth="900.0">
+                        <AnchorPane fx:id="reports_form" prefHeight="600.0" prefWidth="900.0" visible="false">
                            <children>
                               <AnchorPane layoutX="13.0" layoutY="10.0" prefHeight="578.0" prefWidth="874.0" stylesheets="@../css/main.css">
                                  <children>

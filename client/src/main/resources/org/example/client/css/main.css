@@ -196,3 +196,11 @@
 .default-color0.chart-bar {
     -fx-bar-fill: #59bed9; /* Цвет для первой серии */
 }
+.combobox {
+    -fx-background-color: linear-gradient(to bottom, #ffffff, #eaeaea);
+    -fx-background-radius: 0.8px;
+    -fx-border-color: linear-gradient(to bottom right, #59bed9, #1d6679 );
+    -fx-border-width: 0.8px;
+    -fx-font-family: "Arial";
+    -fx-border-radius: 4px;
+}

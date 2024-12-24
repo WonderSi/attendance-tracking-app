@@ -6,8 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -61,6 +59,7 @@ public class dashboardController implements Initializable {
     @FXML private TableColumn<StudentData, String> studentsColLastName;
     @FXML private TableColumn<StudentData, String> studentsColStatus;
     @FXML private TableColumn<StudentData, String> studentsColNote;
+    @FXML private TableColumn<StudentData, String> studentsColPoint;
 
     @FXML private TextField studentsFieldStudentID;
     @FXML private TextField studentsFieldDate;
@@ -70,6 +69,7 @@ public class dashboardController implements Initializable {
     @FXML private TextField studentsFieldLastName;
     @FXML private ComboBox studentsComboBoxStatus;
     @FXML private TextField studentsFieldNote;
+    @FXML private TextField studentsFieldPoint;
 
     @FXML
     private TextField studentsFieldSearch;
@@ -126,7 +126,7 @@ public class dashboardController implements Initializable {
 
 
         studentsTableView.addEventFilter(ScrollEvent.ANY, event -> { if (event.getDeltaX() != 0) { event.consume(); } });
-
+        home_btn.setStyle("-fx-background-color: linear-gradient(to bottom, rgba(255,255,255,0.01), rgba(255,255,255,0.17)); ");
     }
 
     private void updateCounters() {
@@ -541,6 +541,8 @@ public class dashboardController implements Initializable {
             }
         }
     }
+
+
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
