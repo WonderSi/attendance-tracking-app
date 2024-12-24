@@ -119,14 +119,14 @@ public class dashboardController implements Initializable {
             socket = new Socket("127.0.0.1", 2048);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
-            refreshTable();
+            loadData();
         } catch (Exception e) {
             e.printStackTrace();
             showAlert("Connection Error", "Не удалось подключиться к серверу.");
         }
     }
 
-    private void refreshTable() {
+    private void loadData() {
         out.println("GET");
         try {
             String response = in.readLine();
@@ -217,6 +217,15 @@ public class dashboardController implements Initializable {
                         student.getDiscipline().toLowerCase().contains(keyword)
         ));
     }
+    @FXML
+    private void onFilter() {
+        String filter = studentFilterComboBox.getSelectionModel().getSelectedItem();
+        if (filter.equals("Все")) {
+            studentsTableView.setItems(student);
+        } else {
+            studentsTableView.setItems(student.filtered(student -> student.getStatus().equals(filter)));
+        }
+    }
 
     @FXML
     private void onClear() {
@@ -246,7 +255,7 @@ public class dashboardController implements Initializable {
             String response = in.readLine();
             if (response.startsWith("SUCCESS|")) {
                 showAlert("Успех", response.substring(8));
-                refreshTable();
+                loadData();
                 onClear();
             } else if (response.startsWith("ERROR|")) {
                 showAlert("Ошибка", response.substring(6));
@@ -279,7 +288,7 @@ public class dashboardController implements Initializable {
             String response = in.readLine();
             if (response.startsWith("SUCCESS|")) {
                 showAlert("Успех", response.substring(8));
-                refreshTable();
+                loadData();
                 onClear();
             } else if (response.startsWith("ERROR|")) {
                 showAlert("Ошибка", response.substring(6));
@@ -312,7 +321,7 @@ public class dashboardController implements Initializable {
             String response = in.readLine();
             if (response.startsWith("SUCCESS|")) {
                 showAlert("Успех", response.substring(8));
-                refreshTable();
+                loadData();
                 onClear();
             } else if (response.startsWith("ERROR|")) {
                 showAlert("Ошибка", response.substring(6));
