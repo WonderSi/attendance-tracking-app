@@ -29,6 +29,10 @@ public class dashboardController implements Initializable {
     @FXML
     private AnchorPane main_form;
 
+    @FXML private Label homeLabelUniqueStudents;
+    @FXML private Label homeLabelGroupCount;
+    @FXML private Label homeLabelDisciplineCount;
+
     @FXML
     private Button home_btn;
 
@@ -101,6 +105,17 @@ public class dashboardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        //подключение
+        try {
+            socket = new Socket("127.0.0.1", 2048);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new PrintWriter(socket.getOutputStream(), true);
+            loadData();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Connection Error", "Не удалось подключиться к серверу.");
+        }
+
         studentShowListData();
         studentStatusList();
         studentFilterListOne();
@@ -108,9 +123,36 @@ public class dashboardController implements Initializable {
         studentFilterListThree();
         updateBarChart();
 
+        updateCounters();
+
 
         studentsTableView.addEventFilter(ScrollEvent.ANY, event -> { if (event.getDeltaX() != 0) { event.consume(); } });
+
     }
+
+    private void updateCounters() {
+        long uniqueStudents = student.stream()
+                .map(s -> s.getFirstName() + " " + s.getLastName() + " " + s.getGroupID()) // Учитываем имя, фамилию и группу
+                .distinct()
+                .count();
+
+        System.out.println();
+
+        long groupCount = student.stream()
+                .map(StudentData::getGroupID)
+                .distinct()
+                .count();
+
+        long disciplineCount = student.stream()
+                .map(StudentData::getDiscipline)
+                .distinct()
+                .count();
+
+        homeLabelUniqueStudents.setText(String.valueOf(uniqueStudents));
+        homeLabelGroupCount.setText(String.valueOf(groupCount));
+        homeLabelDisciplineCount.setText(String.valueOf(disciplineCount));
+    }
+
 
     public void studentShowListData() {
         //инициализация
@@ -124,18 +166,6 @@ public class dashboardController implements Initializable {
         studentsColNote.setCellValueFactory(new PropertyValueFactory<>("note"));
 
         studentsTableView.setItems(student);
-
-
-        //подключение
-        try {
-            socket = new Socket("127.0.0.1", 2048);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out = new PrintWriter(socket.getOutputStream(), true);
-            loadData();
-        } catch (Exception e) {
-            e.printStackTrace();
-            showAlert("Connection Error", "Не удалось подключиться к серверу.");
-        }
     }
 
     private void loadData() {
@@ -361,6 +391,7 @@ public class dashboardController implements Initializable {
             if (response.startsWith("SUCCESS|")) {
                 showAlert("Успех", response.substring(8));
                 loadData();
+                updateCounters();
                 onClear();
             } else if (response.startsWith("ERROR|")) {
                 showAlert("Ошибка", response.substring(6));
@@ -394,6 +425,7 @@ public class dashboardController implements Initializable {
             if (response.startsWith("SUCCESS|")) {
                 showAlert("Успех", response.substring(8));
                 loadData();
+                updateCounters();
                 updateBarChart();
                 onClear();
             } else if (response.startsWith("ERROR|")) {
@@ -428,6 +460,8 @@ public class dashboardController implements Initializable {
             if (response.startsWith("SUCCESS|")) {
                 showAlert("Успех", response.substring(8));
                 loadData();
+                updateCounters();
+                updateBarChart();
                 onClear();
             } else if (response.startsWith("ERROR|")) {
                 showAlert("Ошибка", response.substring(6));

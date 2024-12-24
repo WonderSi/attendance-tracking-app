@@ -1,6 +1,7 @@
 module org.example.client {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.base;
     requires org.example.shared; // Указываем зависимость на shared
 
     requires org.controlsfx.controls;

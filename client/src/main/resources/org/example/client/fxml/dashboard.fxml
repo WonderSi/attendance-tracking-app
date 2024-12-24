@@ -31,7 +31,7 @@
                             <children>
                                 <FontAwesomeIconView fill="WHITE" glyphName="USER" size="7em" text="">
                                     <VBox.margin>
-                                        <Insets top="50.0" />
+                                        <Insets top="45.0" />
                                     </VBox.margin>
                                 </FontAwesomeIconView>
                                 <Label fx:id="username" text="Your Name" textFill="WHITE">
@@ -44,7 +44,7 @@
                                 </Label>
                                 <Line endX="197.0" stroke="#1d6679" strokeWidth="2.0">
                                     <VBox.margin>
-                                        <Insets top="10.0" />
+                                        <Insets top="30.0" />
                                     </VBox.margin>
                                 </Line>
                                 <Button fx:id="home_btn" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="175.0" styleClass="nav-btn" stylesheets="@../css/main.css" text="Home">
@@ -68,7 +68,7 @@
                                         <Insets top="10.0" />
                                     </VBox.margin>
                                     <graphic>
-                                        <FontAwesomeIconView fill="WHITE" glyphName="CLIPBOARD" size="1.5em" />
+                                        <FontAwesomeIconView fill="WHITE" glyphName="CLIPBOARD" size="1.5em" text="" />
                                     </graphic>
                                 </Button>
                             </children>
@@ -90,19 +90,90 @@
                                  <children>
                                     <VBox prefHeight="578.0" prefWidth="874.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <VBox prefHeight="328.0" prefWidth="874.0" stylesheets="@../css/main.css">
+                                          <HBox alignment="CENTER" prefHeight="250.0" prefWidth="200.0" stylesheets="@../css/main.css">
+                                             <children>
+                                                <VBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="250.0" stylesheets="@../css/main.css">
+                                                   <styleClass>
+                                                      <String fx:value="shadow" />
+                                                      <String fx:value="card-info" />
+                                                   </styleClass>
+                                                   <children>
+                                                      <FontAwesomeIconView fill="WHITE" glyphName="USER" size="75">
+                                                         <VBox.margin>
+                                                            <Insets top="10.0" />
+                                                         </VBox.margin>
+                                                      </FontAwesomeIconView>
+                                                      <Label styleClass="card-info-label" stylesheets="@../css/main.css" text="Количество студентов" textFill="WHITE">
+                                                         <VBox.margin>
+                                                            <Insets top="5.0" />
+                                                         </VBox.margin>
+                                                      </Label>
+                                                      <Label fx:id="homeLabelUniqueStudents" styleClass="card-info-label" stylesheets="@../css/main.css" text="0" textFill="WHITE" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="250.0" stylesheets="@../css/main.css">
+                                                   <styleClass>
+                                                      <String fx:value="shadow" />
+                                                      <String fx:value="card-info" />
+                                                   </styleClass>
+                                                   <children>
+                                                      <FontAwesomeIconView fill="WHITE" glyphName="GROUP" size="75">
+                                                         <VBox.margin>
+                                                            <Insets top="10.0" />
+                                                         </VBox.margin>
+                                                      </FontAwesomeIconView>
+                                                      <Label styleClass="card-info-label" stylesheets="@../css/main.css" text="Количество групп" textFill="WHITE">
+                                                         <VBox.margin>
+                                                            <Insets top="5.0" />
+                                                         </VBox.margin>
+                                                      </Label>
+                                                      <Label fx:id="homeLabelGroupCount" styleClass="card-info-label" stylesheets="@../css/main.css" text="0" textFill="WHITE" />
+                                                   </children>
+                                                   <HBox.margin>
+                                                      <Insets left="30.0" right="30.0" />
+                                                   </HBox.margin>
+                                                </VBox>
+                                                <VBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="250.0" stylesheets="@../css/main.css">
+                                                   <styleClass>
+                                                      <String fx:value="shadow" />
+                                                      <String fx:value="card-info" />
+                                                   </styleClass>
+                                                   <children>
+                                                      <FontAwesomeIconView fill="WHITE" glyphName="BOOKMARK" size="75">
+                                                         <VBox.margin>
+                                                            <Insets top="10.0" />
+                                                         </VBox.margin>
+                                                      </FontAwesomeIconView>
+                                                      <Label styleClass="card-info-label" stylesheets="@../css/main.css" text="Количество дисциплин" textFill="WHITE">
+                                                         <VBox.margin>
+                                                            <Insets top="5.0" />
+                                                         </VBox.margin>
+                                                      </Label>
+                                                      <Label fx:id="homeLabelDisciplineCount" styleClass="card-info-label" stylesheets="@../css/main.css" text="0" textFill="WHITE" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                             <opaqueInsets>
+                                                <Insets />
+                                             </opaqueInsets>
+                                             <padding>
+                                                <Insets bottom="30.0" top="30.0" />
+                                             </padding>
                                              <styleClass>
                                                 <String fx:value="white-bg" />
                                                 <String fx:value="shadow" />
                                              </styleClass>
-                                          </VBox>
+                                          </HBox>
                                           <BarChart fx:id="home_chart">
                                             <xAxis>
-                                              <CategoryAxis fx:id="xAxis" label="Дата" side="BOTTOM" />
+                                              <CategoryAxis label="Дата" side="BOTTOM" fx:id="xAxis" />
                                             </xAxis>
                                             <yAxis>
                                               <NumberAxis fx:id="yAxis" label="Количество посещений" side="LEFT" />
                                             </yAxis>
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" right="10.0" />
+                                             </VBox.margin>
                                           </BarChart>
                                        </children>
                                     </VBox>
@@ -114,7 +185,7 @@
                               </AnchorPane>
                            </children>
                                 </AnchorPane>
-                                <AnchorPane fx:id="students_form" layoutX="71.0" layoutY="163.0" prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <AnchorPane fx:id="students_form" layoutX="71.0" layoutY="163.0" prefHeight="600.0" prefWidth="900.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
                                         <AnchorPane layoutX="13.0" layoutY="11.0" prefHeight="578.0" prefWidth="874.0" stylesheets="@../css/main.css">
                                             <children>
@@ -371,6 +442,264 @@
                                         </AnchorPane>
                                     </children>
                                 </AnchorPane>
+                        <AnchorPane prefHeight="600.0" prefWidth="900.0" visible="false">
+                           <children>
+                              <AnchorPane layoutX="13.0" layoutY="10.0" prefHeight="578.0" prefWidth="874.0" stylesheets="@../css/main.css">
+                                 <children>
+                                    <VBox prefHeight="578.0" prefWidth="874.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <VBox prefHeight="328.0" prefWidth="874.0" stylesheets="@../css/main.css">
+                                             <children>
+                                                <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="874.0">
+                                                   <children>
+                                                      <AnchorPane prefHeight="30.0" prefWidth="200.0">
+                                                         <children>
+                                                            <TextField fx:id="studentsFieldSearch1" layoutX="1.0" layoutY="1.0" onAction="#onSearch" prefHeight="30.0" prefWidth="200.0" promptText="Search" styleClass="search" stylesheets="@../css/main.css" />
+                                                            <FontAwesomeIconView fill="#59bed9" glyphName="SEARCH" layoutX="9.0" layoutY="22.0" selectionEnd="0" size="20" text="" />
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <Label text="Discipline:">
+                                                         <HBox.margin>
+                                                            <Insets left="25.0" />
+                                                         </HBox.margin>
+                                                      </Label>
+                                                      <ComboBox fx:id="studentsComboBoxFilterOne1" onAction="#onFilterOne" prefHeight="30.0" prefWidth="125.0" stylesheets="@../css/main.css">
+                                                         <HBox.margin>
+                                                            <Insets left="5.0" />
+                                                         </HBox.margin>
+                                                      </ComboBox>
+                                                      <Label text="Group:">
+                                                         <HBox.margin>
+                                                            <Insets left="25.0" />
+                                                         </HBox.margin>
+                                                      </Label>
+                                                      <ComboBox fx:id="studentsComboBoxFilterTwo1" onAction="#onFilterTwo" prefHeight="30.0" prefWidth="125.0" stylesheets="@../css/main.css">
+                                                         <HBox.margin>
+                                                            <Insets left="5.0" />
+                                                         </HBox.margin>
+                                                      </ComboBox>
+                                                      <Label text="Status:">
+                                                         <HBox.margin>
+                                                            <Insets left="25.0" />
+                                                         </HBox.margin>
+                                                      </Label>
+                                                      <ComboBox fx:id="studentsComboBoxFilterThree1" onAction="#onFilterThree" prefHeight="30.0" prefWidth="125.0" stylesheets="@../css/main.css">
+                                                         <HBox.margin>
+                                                            <Insets left="5.0" />
+                                                         </HBox.margin>
+                                                      </ComboBox>
+                                                   </children>
+                                                   <VBox.margin>
+                                                      <Insets left="10.0" right="10.0" top="10.0" />
+                                                   </VBox.margin>
+                                                </HBox>
+                                                <TableView fx:id="studentsTableView1" onMouseClicked="#onTableClick" prefHeight="244.0" prefWidth="854.0" stylesheets="@../css/main.css">
+                                                   <columns>
+                                                      <TableColumn fx:id="studentsColStudentID1" prefWidth="74.0" text="StudentID" />
+                                                      <TableColumn fx:id="studentsColDate1" prefWidth="79.20001983642578" text="Date" />
+                                                      <TableColumn fx:id="studentsColDiscipline1" prefWidth="85.5999755859375" text="Discipline" />
+                                                      <TableColumn fx:id="studentsColGroupID1" prefWidth="72.00003051757812" text="Group" />
+                                                      <TableColumn fx:id="studentsColFirstName1" prefWidth="120.800048828125" text="First Name" />
+                                                      <TableColumn fx:id="studentsColLastName1" prefWidth="146.39993286132812" text="Last Name" />
+                                                      <TableColumn fx:id="studentsColStatus1" prefWidth="101.60003662109375" text="Status" />
+                                                      <TableColumn fx:id="studentsColNote1" prefWidth="167.0" text="Note" />
+                                                   </columns>
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                   </VBox.margin>
+                                                   <styleClass>
+                                                      <String fx:value="column-header-background" />
+                                                      <String fx:value="table-view" />
+                                                   </styleClass>
+                                                </TableView>
+                                             </children>
+                                             <styleClass>
+                                                <String fx:value="white-bg" />
+                                                <String fx:value="shadow" />
+                                             </styleClass>
+                                          </VBox>
+                                          <HBox prefHeight="208.0" prefWidth="874.0">
+                                             <children>
+                                                <VBox prefHeight="208.0" prefWidth="250.0">
+                                                   <children>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="100.0">
+                                                         <children>
+                                                            <Label text="ID:">
+                                                               <HBox.margin>
+                                                                  <Insets right="5.0" />
+                                                               </HBox.margin>
+                                                            </Label>
+                                                            <TextField fx:id="studentsFieldStudentID1" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                         </children>
+                                                         <padding>
+                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+                                                         </padding>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="100.0">
+                                                         <children>
+                                                            <Label text="Date:">
+                                                               <HBox.margin>
+                                                                  <Insets right="5.0" />
+                                                               </HBox.margin>
+                                                            </Label>
+                                                            <TextField fx:id="studentsFieldDate1" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                         </children>
+                                                         <padding>
+                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+                                                         </padding>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="100.0">
+                                                         <children>
+                                                            <Label text="Discipline:">
+                                                               <HBox.margin>
+                                                                  <Insets right="5.0" />
+                                                               </HBox.margin>
+                                                            </Label>
+                                                            <TextField fx:id="studentsFieldDiscipline1" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                         </children>
+                                                         <padding>
+                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+                                                         </padding>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="100.0">
+                                                         <children>
+                                                            <Label text="Group:">
+                                                               <HBox.margin>
+                                                                  <Insets right="5.0" />
+                                                               </HBox.margin>
+                                                            </Label>
+                                                            <TextField fx:id="studentsFieldGroupID1" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                         </children>
+                                                         <padding>
+                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+                                                         </padding>
+                                                      </HBox>
+                                                   </children>
+                                                   <HBox.margin>
+                                                      <Insets left="10.0" />
+                                                   </HBox.margin>
+                                                   <padding>
+                                                      <Insets top="15.0" />
+                                                   </padding>
+                                                </VBox>
+                                                <VBox prefHeight="208.0" prefWidth="252.0">
+                                                   <children>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="100.0">
+                                                         <children>
+                                                            <Label text="First Name:">
+                                                               <HBox.margin>
+                                                                  <Insets right="5.0" />
+                                                               </HBox.margin>
+                                                            </Label>
+                                                            <TextField fx:id="studentsFieldFirstName1" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                         </children>
+                                                         <padding>
+                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+                                                         </padding>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="100.0">
+                                                         <children>
+                                                            <Label text="Last Name:">
+                                                               <HBox.margin>
+                                                                  <Insets right="5.0" />
+                                                               </HBox.margin>
+                                                            </Label>
+                                                            <TextField fx:id="studentsFieldLastName1" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                         </children>
+                                                         <padding>
+                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+                                                         </padding>
+                                                      </HBox>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="100.0">
+                                                         <children>
+                                                            <Label text="Status:">
+                                                               <HBox.margin>
+                                                                  <Insets right="5.0" />
+                                                               </HBox.margin>
+                                                            </Label>
+                                                            <ComboBox fx:id="studentsComboBoxStatus1" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                         </children>
+                                                         <padding>
+                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+                                                         </padding>
+                                                      </HBox>
+                                                   </children>
+                                                   <padding>
+                                                      <Insets top="15.0" />
+                                                   </padding>
+                                                </VBox>
+                                                <VBox prefHeight="189.0" prefWidth="270.0">
+                                                   <children>
+                                                      <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="100.0">
+                                                         <children>
+                                                            <Label text="Note:">
+                                                               <HBox.margin>
+                                                                  <Insets right="5.0" />
+                                                               </HBox.margin>
+                                                            </Label>
+                                                            <TextField fx:id="studentsFieldNote1" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                            <TextArea prefHeight="200.0" prefWidth="200.0" styleClass="textfield" stylesheets="@../css/main.css" />
+                                                            <TextField />
+                                                         </children>
+                                                         <padding>
+                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+                                                         </padding>
+                                                      </HBox>
+                                                   </children>
+                                                   <padding>
+                                                      <Insets top="15.0" />
+                                                   </padding>
+                                                </VBox>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="874.0">
+                                             <children>
+                                                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="437.0">
+                                                   <children>
+                                                      <Button fx:id="students_clearBtn1" mnemonicParsing="false" onAction="#onClear" prefHeight="50.0" prefWidth="125.0" styleClass="clear-btn" stylesheets="@../css/main.css" text="Clear">
+                                                         <HBox.margin>
+                                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                         </HBox.margin>
+                                                      </Button>
+                                                      <Button fx:id="students_deleteBtn1" mnemonicParsing="false" onAction="#onDelete" prefHeight="50.0" prefWidth="125.0" styleClass="delete-btn" stylesheets="@../css/main.css" text="Delete" textFill="#784b1e">
+                                                         <HBox.margin>
+                                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                         </HBox.margin>
+                                                         <font>
+                                                            <Font size="51.0" />
+                                                         </font>
+                                                      </Button>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="437.0">
+                                                   <children>
+                                                      <Button fx:id="students_updateBtn1" mnemonicParsing="false" onAction="#onUpdate" prefHeight="50.0" prefWidth="125.0" styleClass="update-btn" stylesheets="@../css/main.css" text="Update" textFill="#781d1d">
+                                                         <HBox.margin>
+                                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                         </HBox.margin>
+                                                      </Button>
+                                                      <Button fx:id="students_addBtn1" mnemonicParsing="false" onAction="#onAdd" prefHeight="50.0" prefWidth="125.0" styleClass="add-btn" stylesheets="@../css/main.css" text="Add">
+                                                         <HBox.margin>
+                                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                         </HBox.margin>
+                                                      </Button>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <styleClass>
+                                    <String fx:value="white-bg" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                              </AnchorPane>
+                           </children>
+                        </AnchorPane>
                             </children>
                         </AnchorPane>
                     </center>
