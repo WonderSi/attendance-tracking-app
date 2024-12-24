@@ -59,7 +59,7 @@ public class dashboardController implements Initializable {
     @FXML private TableColumn<StudentData, String> studentsColLastName;
     @FXML private TableColumn<StudentData, String> studentsColStatus;
     @FXML private TableColumn<StudentData, String> studentsColNote;
-    @FXML private TableColumn<StudentData, String> studentsColPoint;
+    @FXML private TableColumn<StudentData, Integer> studentsColPoint;
 
     @FXML private TextField studentsFieldStudentID;
     @FXML private TextField studentsFieldDate;
@@ -96,6 +96,7 @@ public class dashboardController implements Initializable {
     private Button reports_btn;
 
     private final ObservableList<StudentData> student = FXCollections.observableArrayList();
+    private final ObservableList<StudentData> dataForReport = FXCollections.observableArrayList(student);
 
     private Socket socket;
     private BufferedReader in;
@@ -166,6 +167,10 @@ public class dashboardController implements Initializable {
         studentsColPoint.setCellValueFactory(new PropertyValueFactory<>("point"));
 
         studentsTableView.setItems(student);
+    }
+    public void reportShowListData() {
+        //инициализация
+
     }
 
     private void loadData() {
@@ -558,6 +563,143 @@ public class dashboardController implements Initializable {
             }
         }
     }
+
+//    @FXML
+//    private void onGeneralReport() {
+//        // Запрос общего отчета по группе
+//        TextInputDialog dialog = new TextInputDialog();
+//        dialog.setTitle("Общий отчет");
+//        dialog.setHeaderText("Введите ID группы для отчета:");
+//        dialog.setContentText("ID группы:");
+//
+//        dialog.showAndWait().ifPresent(groupId -> {
+//            String command = String.join("|", "REPORT_GENERAL", groupId);
+//            out.println(command);
+//            try {
+//                String response = in.readLine();
+//                if (response.startsWith("REPORT_GENERAL|")) {
+//                    String[] parts = response.split("\\|", 4);
+//                    if (parts.length == 4) {
+//                        int studentCount = Integer.parseInt(parts[1]);
+//                        double avgGrade = Double.parseDouble(parts[2]);
+//                        String[] students = parts[3].split(";");
+//
+//                        // Обновление таблицы
+//                        reportData.clear();
+//                        for (String s : students) {
+//                            String[] fields = s.split(",");
+//                            if (fields.length >= 6) {
+//                                int id = Integer.parseInt(fields[0]);
+//                                String firstName = fields[1];
+//                                String lastName = fields[2];
+//                                double grade = Double.parseDouble(fields[3]);
+//                                String status = fields[4];
+//                                String note = fields[5];
+//                                reportData.add(new StudentData(id, null, null, null, firstName, lastName, status, note));
+//                                // Дополните по необходимости
+//                            }
+//                        }
+//
+//                        showAlert("Успех", String.format("Группа: %s\nКоличество студентов: %d\nСредний балл: %.2f", groupId, studentCount, avgGrade));
+//                    }
+//                } else if (response.startsWith("ERROR|")) {
+//                    showAlert("Ошибка", response.substring(6));
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                showAlert("Ошибка", "Не удалось получить отчет с сервера.");
+//            }
+//        });
+//    }
+//
+//    @FXML
+//    private void onStudentReport() {
+//        // Запрос отчета по студенту
+//        TextInputDialog dialog = new TextInputDialog();
+//        dialog.setTitle("Отчет по студенту");
+//        dialog.setHeaderText("Введите ID студента для отчета:");
+//        dialog.setContentText("ID студента:");
+//
+//        dialog.showAndWait().ifPresent(studentId -> {
+//            String command = String.join("|", "REPORT_STUDENT", studentId);
+//            out.println(command);
+//            try {
+//                String response = in.readLine();
+//                if (response.startsWith("REPORT_STUDENT|")) {
+//                    String[] parts = response.split("\\|", 6);
+//                    if (parts.length == 6) {
+//                        String fullName = parts[1];
+//                        String groupId = parts[2];
+//                        double avgGrade = Double.parseDouble(parts[3]);
+//                        int totalSubjects = Integer.parseInt(parts[4]);
+//                        String[] grades = parts[5].split(";");
+//
+//                        // Обновление таблицы
+//                        reportData.clear();
+//                        for (String g : grades) {
+//                            String[] fields = g.split(",");
+//                            if (fields.length == 2) {
+//                                String discipline = fields[0];
+//                                double disciplineGrade = Double.parseDouble(fields[1]);
+//                                // Создайте отдельную модель данных для отображения дисциплин и оценок
+//                                // Или используйте существующую модель с соответствующими полями
+//                            }
+//                        }
+//
+//                        showAlert("Успех", String.format("Имя студента: %s\nГруппа: %s\nСредний балл: %.2f\nВсего предметов: %d", fullName, groupId, avgGrade, totalSubjects));
+//                    }
+//                } else if (response.startsWith("ERROR|")) {
+//                    showAlert("Ошибка", response.substring(6));
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                showAlert("Ошибка", "Не удалось получить отчет с сервера.");
+//            }
+//        });
+//    }
+//
+//    @FXML
+//    private void onGlobalReport() {
+//        // Запрос глобального отчета
+//        String command = "REPORT_GLOBAL";
+//        out.println(command);
+//        try {
+//            String response = in.readLine();
+//            if (response.startsWith("REPORT_GLOBAL|")) {
+//                String[] parts = response.split("\\|", 6);
+//                if (parts.length == 6) {
+//                    int totalStudents = Integer.parseInt(parts[1]);
+//                    int totalGroups = Integer.parseInt(parts[2]);
+//                    double avgFacultyGrade = Double.parseDouble(parts[3]);
+//                    double overallAttendance = Double.parseDouble(parts[4]);
+//                    String[] groups = parts[5].split(";");
+//
+//                    // Обновление таблицы
+//                    reportData.clear();
+//                    for (String g : groups) {
+//                        String[] fields = g.split(",");
+//                        if (fields.length == 5) {
+//                            String groupId = fields[0];
+//                            int studentCount = Integer.parseInt(fields[1]);
+//                            double avgGrade = Double.parseDouble(fields[2]);
+//                            double attendance = Double.parseDouble(fields[3]);
+//                            double bestGrade = Double.parseDouble(fields[4]);
+//                            // Добавьте данные в таблицу
+//                            // Например:
+//                            reportData.add(new StudentData(0, null, null, null, groupId, String.valueOf(studentCount), String.valueOf(avgGrade), String.valueOf(attendance)));
+//                        }
+//                    }
+//
+//                    showAlert("Успех", String.format("Общее количество студентов: %d\nКоличество групп: %d\nСредний балл по факультету: %.2f\nПосещаемость: %.2f%%", totalStudents, totalGroups, avgFacultyGrade, overallAttendance));
+//                }
+//            } else if (response.startsWith("ERROR|")) {
+//                showAlert("Ошибка", response.substring(6));
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            showAlert("Ошибка", "Не удалось получить отчет с сервера.");
+//        }
+//    }
 
 
 

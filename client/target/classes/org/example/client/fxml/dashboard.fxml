@@ -11,7 +11,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -188,7 +187,7 @@
                               </AnchorPane>
                            </children>
                                 </AnchorPane>
-                                <AnchorPane fx:id="students_form" layoutX="71.0" layoutY="163.0" prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <AnchorPane fx:id="students_form" layoutX="71.0" layoutY="163.0" prefHeight="600.0" prefWidth="900.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
                                         <AnchorPane layoutX="13.0" layoutY="11.0" prefHeight="578.0" prefWidth="874.0" stylesheets="@../css/main.css">
                                             <children>
@@ -463,199 +462,63 @@
                                         </AnchorPane>
                                     </children>
                                 </AnchorPane>
-                        <AnchorPane fx:id="reports_form" prefHeight="600.0" prefWidth="900.0" visible="false">
+                        <AnchorPane fx:id="reports_form" prefHeight="600.0" prefWidth="900.0">
                            <children>
                               <AnchorPane layoutX="13.0" layoutY="10.0" prefHeight="578.0" prefWidth="874.0" stylesheets="@../css/main.css">
                                  <children>
-                                    <VBox prefHeight="578.0" prefWidth="874.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <HBox prefHeight="578.0" prefWidth="874.0">
                                        <children>
-                                          <VBox alignment="CENTER" prefHeight="328.0" prefWidth="874.0" stylesheets="@../css/main.css">
+                                          <VBox prefHeight="200.0" prefWidth="437.0">
                                              <children>
-                                                <Button mnemonicParsing="false" onAction="#onExportExcel" text="Excel">
-                                                   <VBox.margin>
-                                                      <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
-                                                   </VBox.margin>
-                                                </Button>
+                                                <VBox alignment="BOTTOM_LEFT" prefHeight="600.0" prefWidth="437.0" stylesheets="@../css/main.css">
+                                                   <children>
+                                                      <HBox alignment="TOP_CENTER" prefHeight="30.0" prefWidth="437.0">
+                                                         <children>
+                                                            <Button mnemonicParsing="false" onAction="#onExportExcel" prefHeight="30.0" prefWidth="400.0" styleClass="excel-btn" stylesheets="@../css/main.css" text="Excel">
+                                                               <HBox.margin>
+                                                                  <Insets bottom="10.0" />
+                                                               </HBox.margin>
+                                                            </Button>
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                   <styleClass>
+                                                      <String fx:value="white-bg" />
+                                                      <String fx:value="shadow" />
+                                                   </styleClass>
+                                                </VBox>
                                              </children>
-                                             <styleClass>
-                                                <String fx:value="white-bg" />
-                                                <String fx:value="shadow" />
-                                             </styleClass>
+                                             <HBox.margin>
+                                                <Insets right="10.0" />
+                                             </HBox.margin>
                                           </VBox>
-                                          <HBox prefHeight="208.0" prefWidth="874.0">
+                                          <VBox prefHeight="200.0" prefWidth="437.0">
                                              <children>
-                                                <VBox prefHeight="208.0" prefWidth="250.0">
+                                                <VBox prefHeight="600.0" prefWidth="100.0" stylesheets="@../css/main.css">
+                                                   <styleClass>
+                                                      <String fx:value="white-bg" />
+                                                      <String fx:value="shadow" />
+                                                   </styleClass>
                                                    <children>
-                                                      <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="100.0">
-                                                         <children>
-                                                            <Label text="ID:">
-                                                               <HBox.margin>
-                                                                  <Insets right="5.0" />
-                                                               </HBox.margin>
-                                                            </Label>
-                                                            <TextField fx:id="studentsFieldStudentID1" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
-                                                         </children>
-                                                         <padding>
-                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
-                                                         </padding>
-                                                      </HBox>
-                                                      <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="100.0">
-                                                         <children>
-                                                            <Label text="Date:">
-                                                               <HBox.margin>
-                                                                  <Insets right="5.0" />
-                                                               </HBox.margin>
-                                                            </Label>
-                                                            <TextField fx:id="studentsFieldDate1" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
-                                                         </children>
-                                                         <padding>
-                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
-                                                         </padding>
-                                                      </HBox>
-                                                      <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="100.0">
-                                                         <children>
-                                                            <Label text="Discipline:">
-                                                               <HBox.margin>
-                                                                  <Insets right="5.0" />
-                                                               </HBox.margin>
-                                                            </Label>
-                                                            <TextField fx:id="studentsFieldDiscipline1" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
-                                                         </children>
-                                                         <padding>
-                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
-                                                         </padding>
-                                                      </HBox>
-                                                      <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="100.0">
-                                                         <children>
-                                                            <Label text="Group:">
-                                                               <HBox.margin>
-                                                                  <Insets right="5.0" />
-                                                               </HBox.margin>
-                                                            </Label>
-                                                            <TextField fx:id="studentsFieldGroupID1" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
-                                                         </children>
-                                                         <padding>
-                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
-                                                         </padding>
-                                                      </HBox>
+                                                      <TableView prefHeight="600.0" prefWidth="200.0">
+                                                        <columns>
+                                                          <TableColumn prefWidth="64.00000131130219" text="Group" />
+                                                            <TableColumn prefWidth="172.00000762939453" text="First Name" />
+                                                            <TableColumn prefWidth="171.1998748779297" text="Last Name" />
+                                                        </columns>
+                                                         <VBox.margin>
+                                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                         </VBox.margin>
+                                                      </TableView>
                                                    </children>
-                                                   <HBox.margin>
-                                                      <Insets left="10.0" />
-                                                   </HBox.margin>
-                                                   <padding>
-                                                      <Insets top="15.0" />
-                                                   </padding>
-                                                </VBox>
-                                                <VBox prefHeight="208.0" prefWidth="252.0">
-                                                   <children>
-                                                      <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="100.0">
-                                                         <children>
-                                                            <Label text="First Name:">
-                                                               <HBox.margin>
-                                                                  <Insets right="5.0" />
-                                                               </HBox.margin>
-                                                            </Label>
-                                                            <TextField fx:id="studentsFieldFirstName1" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
-                                                         </children>
-                                                         <padding>
-                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
-                                                         </padding>
-                                                      </HBox>
-                                                      <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="100.0">
-                                                         <children>
-                                                            <Label text="Last Name:">
-                                                               <HBox.margin>
-                                                                  <Insets right="5.0" />
-                                                               </HBox.margin>
-                                                            </Label>
-                                                            <TextField fx:id="studentsFieldLastName1" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
-                                                         </children>
-                                                         <padding>
-                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
-                                                         </padding>
-                                                      </HBox>
-                                                      <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="100.0">
-                                                         <children>
-                                                            <Label text="Status:">
-                                                               <HBox.margin>
-                                                                  <Insets right="5.0" />
-                                                               </HBox.margin>
-                                                            </Label>
-                                                            <ComboBox fx:id="studentsComboBoxStatus1" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
-                                                         </children>
-                                                         <padding>
-                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
-                                                         </padding>
-                                                      </HBox>
-                                                   </children>
-                                                   <padding>
-                                                      <Insets top="15.0" />
-                                                   </padding>
-                                                </VBox>
-                                                <VBox prefHeight="189.0" prefWidth="270.0">
-                                                   <children>
-                                                      <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="100.0">
-                                                         <children>
-                                                            <Label text="Note:">
-                                                               <HBox.margin>
-                                                                  <Insets right="5.0" />
-                                                               </HBox.margin>
-                                                            </Label>
-                                                            <TextField fx:id="studentsFieldNote1" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
-                                                            <TextArea prefHeight="200.0" prefWidth="200.0" styleClass="textfield" stylesheets="@../css/main.css" />
-                                                            <TextField />
-                                                         </children>
-                                                         <padding>
-                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
-                                                         </padding>
-                                                      </HBox>
-                                                   </children>
-                                                   <padding>
-                                                      <Insets top="15.0" />
-                                                   </padding>
                                                 </VBox>
                                              </children>
-                                             <VBox.margin>
-                                                <Insets />
-                                             </VBox.margin>
-                                          </HBox>
-                                          <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="874.0">
-                                             <children>
-                                                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="437.0">
-                                                   <children>
-                                                      <Button fx:id="students_clearBtn1" mnemonicParsing="false" onAction="#onClear" prefHeight="50.0" prefWidth="125.0" styleClass="clear-btn" stylesheets="@../css/main.css" text="Clear">
-                                                         <HBox.margin>
-                                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                                         </HBox.margin>
-                                                      </Button>
-                                                      <Button fx:id="students_deleteBtn1" mnemonicParsing="false" onAction="#onDelete" prefHeight="50.0" prefWidth="125.0" styleClass="delete-btn" stylesheets="@../css/main.css" text="Delete" textFill="#784b1e">
-                                                         <HBox.margin>
-                                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                                         </HBox.margin>
-                                                         <font>
-                                                            <Font size="51.0" />
-                                                         </font>
-                                                      </Button>
-                                                   </children>
-                                                </HBox>
-                                                <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="437.0">
-                                                   <children>
-                                                      <Button fx:id="students_updateBtn1" mnemonicParsing="false" onAction="#onUpdate" prefHeight="50.0" prefWidth="125.0" styleClass="update-btn" stylesheets="@../css/main.css" text="Update" textFill="#781d1d">
-                                                         <HBox.margin>
-                                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                                         </HBox.margin>
-                                                      </Button>
-                                                      <Button fx:id="students_addBtn1" mnemonicParsing="false" onAction="#onAdd" prefHeight="50.0" prefWidth="125.0" styleClass="add-btn" stylesheets="@../css/main.css" text="Add">
-                                                         <HBox.margin>
-                                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                                         </HBox.margin>
-                                                      </Button>
-                                                   </children>
-                                                </HBox>
-                                             </children>
-                                          </HBox>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </VBox>
                                        </children>
-                                    </VBox>
+                                    </HBox>
                                  </children>
                                  <styleClass>
                                     <String fx:value="white-bg" />
