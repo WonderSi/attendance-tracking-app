@@ -6,6 +6,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.ScrollEvent;
@@ -19,9 +22,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class dashboardController implements Initializable {
 
@@ -31,8 +32,9 @@ public class dashboardController implements Initializable {
     @FXML
     private Button home_btn;
 
-    @FXML
-    private BarChart<?, ?> home_chart;
+    @FXML private BarChart<String, Number> home_chart;
+    @FXML private CategoryAxis xAxis;
+    @FXML private NumberAxis yAxis;
 
     @FXML
     private AnchorPane home_form;
@@ -104,6 +106,8 @@ public class dashboardController implements Initializable {
         studentFilterListOne();
         studentFilterListTwo();
         studentFilterListThree();
+        updateBarChart();
+
 
         studentsTableView.addEventFilter(ScrollEvent.ANY, event -> { if (event.getDeltaX() != 0) { event.consume(); } });
     }
@@ -120,6 +124,7 @@ public class dashboardController implements Initializable {
         studentsColNote.setCellValueFactory(new PropertyValueFactory<>("note"));
 
         studentsTableView.setItems(student);
+
 
         //подключение
         try {
@@ -165,6 +170,32 @@ public class dashboardController implements Initializable {
             showAlert("Communication Error", "Ошибка связи с сервером.");
         }
     }
+
+    private void updateBarChart() {
+        //создание серии данных, для столбчатой диаграммы
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Количество посещений по датам");
+
+        //группируем данные по дате и считаем количество посещений,
+        Map<String, Long> attendancePerDate = new TreeMap<>();
+        for (StudentData sd : student) {
+            String date = sd.getDate();
+            if ("Присутствовал".equals(sd.getStatus())) {
+                //проходимся по студентам и добавляем к счетчику общую посещаемость
+                attendancePerDate.put(date, attendancePerDate.getOrDefault(date, 0L) + 1);
+            }
+        }
+
+        //перебираем все пары и добавляем данные в серию. для каждойпары создается объект XYChart.Data
+        for (Map.Entry<String, Long> entry : attendancePerDate.entrySet()) {
+            series.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
+        }
+
+        // Очищаем предыдущие данные и добавляем новую серию
+        home_chart.getData().clear();
+        home_chart.getData().add(series);
+    }
+
 
 
     private String[] listStatus = {"Присутствовал", "Отсутствовал"};
@@ -218,7 +249,6 @@ public class dashboardController implements Initializable {
 
 
 
-
     public void switchForm(ActionEvent event) {
         if (event.getSource() == home_btn) {
             home_form.setVisible(true);
@@ -229,6 +259,7 @@ public class dashboardController implements Initializable {
         }
 
     }
+
 
     public void onTableClick(javafx.scene.input.MouseEvent mouseEvent) {
         if (mouseEvent.getClickCount() == 2) { // Для двойного клика
@@ -256,6 +287,7 @@ public class dashboardController implements Initializable {
     }
 
 
+
     private void applyFilterAndSearch() {
         String keyword = studentsFieldSearch.getText().toLowerCase();
         String filter1 = (String) studentsComboBoxFilterOne.getSelectionModel().getSelectedItem();
@@ -281,7 +313,6 @@ public class dashboardController implements Initializable {
             return matchesKeyword && matchesFilterOne && matchesFilterTwo && matchesFilterThree;
         }));
     }
-
     @FXML
     private void onSearch() {
         applyFilterAndSearch();
@@ -298,6 +329,8 @@ public class dashboardController implements Initializable {
     private void onFilterThree() {
         applyFilterAndSearch();
     }
+
+
 
     @FXML
     private void onClear() {
@@ -361,6 +394,7 @@ public class dashboardController implements Initializable {
             if (response.startsWith("SUCCESS|")) {
                 showAlert("Успех", response.substring(8));
                 loadData();
+                updateBarChart();
                 onClear();
             } else if (response.startsWith("ERROR|")) {
                 showAlert("Ошибка", response.substring(6));
@@ -403,6 +437,8 @@ public class dashboardController implements Initializable {
         }
     };
 
+
+    
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);

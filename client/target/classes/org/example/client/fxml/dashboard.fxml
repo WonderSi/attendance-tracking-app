@@ -98,10 +98,10 @@
                                           </VBox>
                                           <BarChart fx:id="home_chart">
                                             <xAxis>
-                                              <CategoryAxis side="BOTTOM" />
+                                              <CategoryAxis fx:id="xAxis" label="Дата" side="BOTTOM" />
                                             </xAxis>
                                             <yAxis>
-                                              <NumberAxis side="LEFT" />
+                                              <NumberAxis fx:id="yAxis" label="Количество посещений" side="LEFT" />
                                             </yAxis>
                                           </BarChart>
                                        </children>
