@@ -39,8 +39,6 @@ public class dashboardController implements Initializable {
     private Button home_btn;
 
     @FXML private BarChart<String, Number> home_chart;
-    @FXML private CategoryAxis xAxis;
-    @FXML private NumberAxis yAxis;
 
     @FXML
     private AnchorPane home_form;
