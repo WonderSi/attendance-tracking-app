@@ -299,7 +299,7 @@
                                                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                                             </HBox.margin>
                                                                         </Button>
-                                                                        <Button fx:id="students_deleteBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="125.0" styleClass="delete-btn" stylesheets="@../css/main.css" text="Delete" textFill="#784b1e">
+                                                                        <Button fx:id="students_deleteBtn" mnemonicParsing="false" onAction="#studentsBtnDelete" prefHeight="50.0" prefWidth="125.0" styleClass="delete-btn" stylesheets="@../css/main.css" text="Delete" textFill="#784b1e">
                                                                             <HBox.margin>
                                                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                                             </HBox.margin>
@@ -311,7 +311,7 @@
                                                                 </HBox>
                                                                 <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="437.0">
                                                                     <children>
-                                                                        <Button fx:id="students_updateBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="125.0" styleClass="update-btn" stylesheets="@../css/main.css" text="Update" textFill="#781d1d">
+                                                                        <Button fx:id="students_updateBtn" mnemonicParsing="false" onAction="#studentsBtnUpdate" prefHeight="50.0" prefWidth="125.0" styleClass="update-btn" stylesheets="@../css/main.css" text="Update" textFill="#781d1d">
                                                                             <HBox.margin>
                                                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                                             </HBox.margin>

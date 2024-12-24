@@ -96,7 +96,66 @@ public class dashboardController implements Initializable {
         studentsFieldLastName.clear();
         studentsChoiceBoxStatus.getSelectionModel().clearSelection();
         studentsFieldNote.clear();
-    }
+    };
+    @FXML
+    private void studentsBtnDelete() {
+        StudentData selected = studentsTableView.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showAlert("Внимание", "Выберите запись для удаления.");
+            return;
+        }
+
+        String studentID = studentsFieldStudentID.getText();
+
+        String command = String.join("|", "DELETE", studentID);
+        out.println(command);
+
+        try {
+            String response = in.readLine();
+            if (response.startsWith("SUCCESS|")) {
+                showAlert("Успех", response.substring(8));
+                refreshTable();
+                studentsBtnClear();
+            } else if (response.startsWith("ERROR|")) {
+                showAlert("Ошибка", response.substring(6));
+            }
+        } catch (IOException e) {
+            showAlert("Ошибка", "Ошибка при удалении записи.");
+        }
+    };
+    @FXML
+    private void studentsBtnUpdate() {
+        StudentData selected = studentsTableView.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showAlert("Внимание", "Выберите запись для обновления.");
+            return;
+        }
+
+        String studentID = studentsFieldStudentID.getText();
+        String date = studentsFieldDate.getText();
+        String discipline = studentsFieldDiscipline.getText();
+        String groupID = studentsFieldGroupID.getText();
+        String firstName = studentsFieldFirstName.getText();
+        String lastName = studentsFieldLastName.getText();
+        String status = (String) studentsChoiceBoxStatus.getValue();
+        String note = studentsFieldNote.getText();
+
+        String command = String.join("|", "UPDATE", studentID, date, discipline, groupID, firstName, lastName, status, note);
+        out.println(command);
+
+        try {
+            String response = in.readLine();
+            if (response.startsWith("SUCCESS|")) {
+                showAlert("Успех", response.substring(8));
+                refreshTable();
+                studentsBtnClear();
+            } else if (response.startsWith("ERROR|")) {
+                showAlert("Ошибка", response.substring(6));
+            }
+        } catch (IOException e) {
+            showAlert("Ошибка", "Ошибка при обновлении записи.");
+        }
+    };
     @FXML
     private void studentsBtnAdd() {
         String date = studentsFieldDate.getText();
@@ -106,6 +165,7 @@ public class dashboardController implements Initializable {
         String lastName = studentsFieldLastName.getText();
         String status = (String) studentsChoiceBoxStatus.getValue();
         String note = studentsFieldNote.getText();
+        note = (note.isEmpty()) ? " " : note;
 
         if (date.isEmpty() || discipline.isEmpty() || groupID.isEmpty() ||
                 firstName.isEmpty() || lastName.isEmpty() || status.isEmpty()) {
@@ -128,41 +188,7 @@ public class dashboardController implements Initializable {
         } catch (IOException e) {
             showAlert("Ошибка", "Ошибка при добавлении записи.");
         }
-    }
-
-//    @FXML
-//    private void studentsUpdate() {
-//        StudentData selected = studentsTableView.getSelectionModel().getSelectedItem();
-//        if (selected == null) {
-//            showAlert("Внимание", "Выберите запись для обновления.");
-//            return;
-//        }
-//
-//        String studentID = String.valueOf(selected.getStudentID());
-//        String date = fieldDate.getText();
-//        String discipline = fieldDiscipline.getText();
-//        String groupID = fieldGroupID.getText();
-//        String firstName = fieldFirstName.getText();
-//        String lastName = fieldLastName.getText();
-//        String status = fieldStatus.getText();
-//        String note = fieldNote.getText();
-//
-//        String command = String.join("|", "UPDATE", studentID, date, discipline, groupID, firstName, lastName, status, note);
-//        out.println(command);
-//
-//        try {
-//            String response = in.readLine();
-//            if (response.startsWith("SUCCESS|")) {
-//                showAlert("Успех", response.substring(8));
-//                loadData();
-//                onClear();
-//            } else if (response.startsWith("ERROR|")) {
-//                showAlert("Ошибка", response.substring(6));
-//            }
-//        } catch (IOException e) {
-//            showAlert("Ошибка", "Ошибка при обновлении записи.");
-//        }
-//    }
+    };
 
     private final ObservableList<StudentData> student = FXCollections.observableArrayList();
 
