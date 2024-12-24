@@ -13,12 +13,14 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.example.shared.StudentData;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.net.URL;
 import java.sql.Date;
@@ -486,7 +488,62 @@ public class dashboardController implements Initializable {
     };
 
 
-    
+
+
+
+
+    @FXML
+    private void onExportExcel() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Сохранить как Excel");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel Files", "*.xlsx"));
+        File file = fileChooser.showSaveDialog(main_form.getScene().getWindow());
+
+        if (file != null) {
+            try (Workbook workbook = new XSSFWorkbook()) {
+                Sheet sheet = workbook.createSheet("Students");
+                Row headerRow = sheet.createRow(0);
+
+                // Creating headers
+                for (int i = 0; i < studentsTableView.getColumns().size(); i++) {
+                    // Using the correct org.apache.poi.ss.usermodel.Cell class
+                    org.apache.poi.ss.usermodel.Cell cell = headerRow.createCell(i);
+                    cell.setCellValue(studentsTableView.getColumns().get(i).getText());
+                }
+
+                // Заполнение данными
+                for (int i = 0; i < student.size(); i++) {
+                    Row row = sheet.createRow(i + 1);
+                    StudentData sd = student.get(i);
+
+                    row.createCell(0).setCellValue(sd.getStudentID());
+                    row.createCell(1).setCellValue(sd.getDate());
+                    row.createCell(2).setCellValue(sd.getDiscipline());
+                    row.createCell(3).setCellValue(sd.getGroupID());
+                    row.createCell(4).setCellValue(sd.getFirstName());
+                    row.createCell(5).setCellValue(sd.getLastName());
+                    row.createCell(6).setCellValue(sd.getStatus());
+                    row.createCell(7).setCellValue(sd.getNote());
+                }
+
+                // Авторазмер колонок
+                for (int i = 0; i < studentsTableView.getColumns().size(); i++) {
+                    sheet.autoSizeColumn(i);
+                }
+
+                // Запись в файл
+                try (FileOutputStream fos = new FileOutputStream(file)) {
+                    workbook.write(fos);
+                }
+
+                showAlert("Успех", "Экспорт в Excel выполнен успешно.");
+            } catch (Exception e) {
+                e.printStackTrace();
+                showAlert("Ошибка", "Не удалось экспортировать в Excel.");
+            }
+        }
+    }
+
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);

@@ -12,6 +12,9 @@ module org.example.client {
     requires java.sql;
     requires com.google.gson;
     requires java.desktop;
+    requires org.apache.poi.poi;
+    requires org.apache.poi.ooxml;
+    requires kernel;
 
     opens org.example.client to javafx.fxml;
     exports org.example.client;
