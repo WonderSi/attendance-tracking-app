@@ -376,6 +376,7 @@
                                                                   <Insets right="5.0" />
                                                                </HBox.margin>
                                                             </Label>
+                                                            <TextField fx:id="studentsFieldPoint" prefHeight="26.0" prefWidth="175.0" styleClass="textfield" stylesheets="@../css/main.css" />
                                                          </children>
                                                          <padding>
                                                             <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />

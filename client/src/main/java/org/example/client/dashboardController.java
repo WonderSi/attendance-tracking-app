@@ -163,6 +163,7 @@ public class dashboardController implements Initializable {
         studentsColLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         studentsColStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         studentsColNote.setCellValueFactory(new PropertyValueFactory<>("note"));
+        studentsColPoint.setCellValueFactory(new PropertyValueFactory<>("point"));
 
         studentsTableView.setItems(student);
     }
@@ -181,7 +182,7 @@ public class dashboardController implements Initializable {
                 String[] userEntries = response.split(";");
                 for (String entry : userEntries) {
                     String[] fields = entry.split(",");
-                    if (fields.length == 8) {
+                    if (fields.length == 9) {
                         int studentID = Integer.parseInt(fields[0]);
                         Date date = Date.valueOf(fields[1]);
                         String discipline = fields[2];
@@ -190,7 +191,8 @@ public class dashboardController implements Initializable {
                         String lastName = fields[5];
                         String status = fields[6];
                         String note = fields[7];
-                        student.add(new StudentData(studentID, date, discipline, groupID, firstName, lastName, status, note));
+                        int point = Integer.parseInt(fields[8]);
+                        student.add(new StudentData(studentID, date, discipline, groupID, firstName, lastName, status, note, point));
                     }
                 }
             }
@@ -317,6 +319,7 @@ public class dashboardController implements Initializable {
                 System.out.println("LastName: " + selected.getLastName());
                 System.out.println("Status: " + selected.getStatus());
                 System.out.println("Note: " + selected.getNote());
+                System.out.println("Point: " + selected.getPoint());
 
                 studentsFieldStudentID.setText(String.valueOf(selected.getStudentID()));
                 studentsFieldDate.setText(selected.getDate());
@@ -326,6 +329,7 @@ public class dashboardController implements Initializable {
                 studentsFieldLastName.setText(selected.getLastName());
                 studentsComboBoxStatus.setValue(selected.getStatus());
                 studentsFieldNote.setText(selected.getNote());
+                studentsFieldPoint.setText(String.valueOf(selected.getPoint()));
             }
         }
     }
@@ -386,6 +390,7 @@ public class dashboardController implements Initializable {
         studentsFieldLastName.clear();
         studentsComboBoxStatus.getSelectionModel().clearSelection();
         studentsFieldNote.clear();
+        studentsFieldPoint.clear();
     };
     @FXML
     private void onDelete() {
@@ -396,6 +401,10 @@ public class dashboardController implements Initializable {
         }
 
         String studentID = studentsFieldStudentID.getText();
+
+        if (studentID.isEmpty()) {
+            showAlert("Внимание", "Пожалуйста, заполните поле ID.");
+        }
 
         String command = String.join("|", "DELETE", studentID);
         out.println(command);
@@ -430,8 +439,15 @@ public class dashboardController implements Initializable {
         String lastName = studentsFieldLastName.getText();
         String status = (String) studentsComboBoxStatus.getValue();
         String note = studentsFieldNote.getText();
+        String point = studentsFieldPoint.getText();
 
-        String command = String.join("|", "UPDATE", studentID, date, discipline, groupID, firstName, lastName, status, note);
+        if (date.isEmpty() || discipline.isEmpty() || groupID.isEmpty() ||
+                firstName.isEmpty() || lastName.isEmpty() || status.isEmpty() || point.isEmpty()) {
+            showAlert("Внимание", "Пожалуйста, заполните все поля.");
+            return;
+        }
+
+        String command = String.join("|", "UPDATE", studentID, date, discipline, groupID, firstName, lastName, status, note, point);
         out.println(command);
 
         try {
@@ -458,15 +474,16 @@ public class dashboardController implements Initializable {
         String lastName = studentsFieldLastName.getText();
         String status = (String) studentsComboBoxStatus.getValue();
         String note = studentsFieldNote.getText();
+        String point = studentsFieldPoint.getText();
         note = (note.isEmpty()) ? " " : note;
 
         if (date.isEmpty() || discipline.isEmpty() || groupID.isEmpty() ||
-                firstName.isEmpty() || lastName.isEmpty() || status.isEmpty()) {
+                firstName.isEmpty() || lastName.isEmpty() || status.isEmpty() || point.isEmpty()) {
             showAlert("Внимание", "Пожалуйста, заполните все поля.");
             return;
         }
 
-        String command = String.join("|", "ADD", date, discipline, groupID, firstName, lastName, status, note);
+        String command = String.join("|", "ADD", date, discipline, groupID, firstName, lastName, status, note, point);
         out.println(command);
 
         try {

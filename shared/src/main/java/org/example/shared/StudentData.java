@@ -16,8 +16,9 @@ public class StudentData {
     private final StringProperty lastName;
     private final StringProperty status;
     private final StringProperty note;
+    private final IntegerProperty point;
 
-    public StudentData(Integer studentID, Date date, String discipline, String groupID, String firstName, String lastName, String status, String note) {
+    public StudentData(Integer studentID, Date date, String discipline, String groupID, String firstName, String lastName, String status, String note, Integer point) {
         this.studentID = new SimpleIntegerProperty(studentID);
         this.date = new SimpleStringProperty(date.toString());
         this.discipline = new SimpleStringProperty(discipline);
@@ -26,6 +27,7 @@ public class StudentData {
         this.lastName = new SimpleStringProperty(lastName);
         this.status = new SimpleStringProperty(status);
         this.note = new SimpleStringProperty(note);
+        this.point = new SimpleIntegerProperty(point);
     }
 
     public Integer getStudentID() {
@@ -113,5 +115,16 @@ public class StudentData {
     }
     public void setNote(String note) {
         this.note.set(note);
+    }
+
+
+    public Integer getPoint() {
+        return point.get();
+    }
+    public IntegerProperty pointProperty() {
+        return point;
+    }
+    public void setPoint(Integer point) {
+        this.point.set(point);
     }
 }
