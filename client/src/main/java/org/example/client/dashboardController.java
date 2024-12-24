@@ -283,14 +283,23 @@ public class dashboardController implements Initializable {
             home_form.setVisible(true);
             students_form.setVisible(false);
             reports_form.setVisible(false);
+            home_btn.setStyle("-fx-background-color: linear-gradient(to bottom, rgba(255,255,255,0.01), rgba(255,255,255,0.17)); ");
+            students_btn.setStyle("-fx-background-color: transparent");
+            reports_btn.setStyle("-fx-background-color: transparent");
         } else if (event.getSource() == students_btn) {
             home_form.setVisible(false);
             students_form.setVisible(true);
             reports_form.setVisible(false);
+            home_btn.setStyle("-fx-background-color: transparent");
+            students_btn.setStyle("-fx-background-color: linear-gradient(to bottom, rgba(255,255,255,0.01), rgba(255,255,255,0.17)); ");
+            reports_btn.setStyle("-fx-background-color: transparent");
         } else if (event.getSource() == reports_btn) {
             home_form.setVisible(false);
             students_form.setVisible(false);
             reports_form.setVisible(true);
+            home_btn.setStyle("-fx-background-color: transparent");
+            students_btn.setStyle("-fx-background-color: transparent");
+            reports_btn.setStyle("-fx-background-color: linear-gradient(to bottom, rgba(255,255,255,0.01), rgba(255,255,255,0.17)); ");
         }
 
     }

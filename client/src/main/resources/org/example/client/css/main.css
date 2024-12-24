@@ -6,22 +6,12 @@
 
 .nav-btn {
     -fx-background-color: transparent;
-    -fx-border-radius: 0px;
-    -fx-border-width: 0px 0px 1px 0px;
-    -fx-border-color: transparent;
     -fx-cursor: hand;
     -fx-font-family: "Arial";
     -fx-font-size: 14px;
     -fx-text-fill: #fff;
     -fx-alignment: CENTER-LEFT;
     -fx-padding: 10px 20px;
-}
-.nav-btn:hover {
-    -fx-border-color: transparent transparent white transparent;
-}
-.nav-btn:focused {
-    -fx-border-color: transparent transparent white transparent;
-    -fx-border-width: 0px 0px 1.5px 0px;
 }
 
 
