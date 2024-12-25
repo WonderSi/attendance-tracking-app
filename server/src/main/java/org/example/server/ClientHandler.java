@@ -1,20 +1,18 @@
 package org.example.server;
 
-import org.example.shared.StudentData;
-
-import java.net.Socket;
-
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.IOException;
-
+import java.net.Socket;
 import java.sql.*;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.*;
 
 class ClientHandler implements Runnable {
+    private static final Logger logger = Logger.getLogger(ClientHandler.class.getName());
+
     private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
@@ -27,8 +25,40 @@ class ClientHandler implements Runnable {
             out = new PrintWriter(socket.getOutputStream(), true);
             //устанавливаем соединение с базой данных
             connect = database.connectBd();
+            logger.info("Подключен клиент: " + socket.getInetAddress());
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Ошибка при подключении клиента", e);
+        }
+    }
+
+    private void setupLogger() {
+        try {
+            //удаление стандартных обработчиков
+            Logger rootLogger = Logger.getLogger("");
+            Handler[] handlers = rootLogger.getHandlers();
+            for (Handler handler : handlers) {
+                rootLogger.removeHandler(handler);
+            }
+
+            //создание обработчика для консоли
+            ConsoleHandler consoleHandler = new ConsoleHandler();
+            consoleHandler.setLevel(Level.ALL);
+            consoleHandler.setFormatter(new SimpleFormatter());
+
+            //создание обработчика для файла
+            FileHandler fileHandler = new FileHandler("server.log", true);
+            fileHandler.setLevel(Level.ALL);
+            fileHandler.setFormatter(new SimpleFormatter());
+
+            //добавление обработчиков к логгеру
+            logger.addHandler(consoleHandler);
+            logger.addHandler(fileHandler);
+
+            logger.setLevel(Level.ALL);
+            logger.setUseParentHandlers(false);
         } catch (IOException e) {
             e.printStackTrace();
+            // Если логирование не удалось настроить, продолжаем без него
         }
     }
 
@@ -37,7 +67,7 @@ class ClientHandler implements Runnable {
         try {
             String request;
             while ((request = in.readLine()) != null) {
-                System.out.println("Получен запрос: " + request);
+                logger.info("Получен запрос: " + request);
                 String[] parts = request.split("\\|");
                 String command = parts[0];
 
@@ -65,16 +95,18 @@ class ClientHandler implements Runnable {
                         break;
                     default:
                         out.println("UNKNOWN_COMMAND");
+                        logger.warning("Неизвестная команда: " + command);
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Ошибка при обработке запроса клиента", e);
         } finally {
             try {
                 connect.close();
                 socket.close();
+                logger.info("Клиент отключился: " + socket.getInetAddress());
             } catch (IOException | SQLException e) {
-                e.printStackTrace();
+                logger.log(Level.SEVERE, "Ошибка при закрытии соединения", e);
             }
         }
     }
@@ -105,12 +137,11 @@ class ClientHandler implements Runnable {
                         point
                         );
             }
-            System.out.println("Server response: " + students);
-            //отправляем пользователей, разделенных ";"
+            logger.info("Отправка данных студентов клиенту");
             out.println(String.join(";", students));
         } catch (SQLException e) {
-            e.printStackTrace();
-            out.println("ERROR");
+            logger.log(Level.SEVERE, "Ошибка при выполнении handleGet", e);
+            out.println("ERROR|" + e.getMessage());
         }
     }
 
@@ -128,7 +159,9 @@ class ClientHandler implements Runnable {
             pstmt.setString(8, parts[8]);
             pstmt.executeUpdate();
             out.println("SUCCESS|Запись добавлена");
+            logger.info("Добавлена новая запись: " + parts[4] + " " + parts[5]);
         } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Ошибка при добавлении записи", e);
             out.println("ERROR|" + e.getMessage());
         }
     }
@@ -158,217 +191,43 @@ class ClientHandler implements Runnable {
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
                 out.println("SUCCESS|Запись обновлена");
+                logger.info("Обновлена запись");
             } else {
                 out.println("ERROR|Запись не найдена");
+                logger.info("Запись не найдена");
             }
         } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Ошибка при обновлении записи", e);
             out.println("ERROR|" + e.getMessage());
         }
     }
 
     private void handleDelete(String[] parts) {
         try {
-            // Ожидается формат: DELETE|StudentID
             String query = "DELETE FROM student WHERE student_id=?";
             PreparedStatement pstmt = connect.prepareStatement(query);
             pstmt.setInt(1, Integer.parseInt(parts[1]));
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
                 out.println("SUCCESS|Запись удалена");
+                logger.info("Запись удалена");
             } else {
                 out.println("ERROR|Запись не найдена");
+                logger.info("Запись не найдена");
             }
         } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Ошибка при удалении записи", e);
             out.println("ERROR|" + e.getMessage());
         }
     }
 
     private void handleReportGeneral(String[] parts) {
-        if (parts.length != 2) {
-            out.println("ERROR|Неверный формат команды REPORT_GENERAL");
-            return;
-        }
-        String groupId = parts[1];
-        try {
-            // Количество студентов в группе
-            PreparedStatement pstmtCount = connect.prepareStatement(
-                    "SELECT COUNT(*) AS student_count FROM student WHERE group_id = ?");
-            pstmtCount.setString(1, groupId);
-            ResultSet rsCount = pstmtCount.executeQuery();
-            int studentCount = 0;
-            if (rsCount.next()) {
-                studentCount = rsCount.getInt("student_count");
-            }
-
-            // Средний балл группы
-            // Предполагается, что есть поле average_grade в таблице student
-            PreparedStatement pstmtAvg = connect.prepareStatement(
-                    "SELECT AVG(average_grade) AS avg_grade FROM student WHERE group_id = ?");
-            pstmtAvg.setString(1, groupId);
-            ResultSet rsAvg = pstmtAvg.executeQuery();
-            double avgGrade = 0.0;
-            if (rsAvg.next()) {
-                avgGrade = rsAvg.getDouble("avg_grade");
-            }
-
-            // Список студентов с деталями
-            PreparedStatement pstmtList = connect.prepareStatement(
-                    "SELECT student_id, first_name, last_name, average_grade, status, note FROM student WHERE group_id = ?");
-            pstmtList.setString(1, groupId);
-            ResultSet rsList = pstmtList.executeQuery();
-            List<String> students = new ArrayList<>();
-            while (rsList.next()) {
-                int id = rsList.getInt("student_id");
-                String firstName = rsList.getString("first_name");
-                String lastName = rsList.getString("last_name");
-                double grade = rsList.getDouble("average_grade");
-                String status = rsList.getString("status");
-                String note = rsList.getString("note");
-                students.add(String.format("%d,%s,%s,%.2f,%s,%s", id, firstName, lastName, grade, status, note));
-            }
-
-            // Формирование ответа
-            String response = String.format("REPORT_GENERAL|%d|%.2f|%s", studentCount, avgGrade, String.join(";", students));
-            out.println(response);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            out.println("ERROR|" + e.getMessage());
-        }
     }
 
     private void handleReportStudent(String[] parts) {
-        if (parts.length != 2) {
-            out.println("ERROR|Неверный формат команды REPORT_STUDENT");
-            return;
-        }
-        int studentId;
-        try {
-            studentId = Integer.parseInt(parts[1]);
-        } catch (NumberFormatException e) {
-            out.println("ERROR|Неверный ID студента");
-            return;
-        }
-        try {
-            // Информация о студенте
-            PreparedStatement pstmtInfo = connect.prepareStatement(
-                    "SELECT group_id, first_name, last_name, average_grade FROM student WHERE student_id = ?");
-            pstmtInfo.setInt(1, studentId);
-            ResultSet rsInfo = pstmtInfo.executeQuery();
-            if (!rsInfo.next()) {
-                out.println("ERROR|Студент не найден");
-                return;
-            }
-            String groupId = rsInfo.getString("group_id");
-            String firstName = rsInfo.getString("first_name");
-            String lastName = rsInfo.getString("last_name");
-            double avgGrade = rsInfo.getDouble("average_grade");
-
-            // Процент посещаемости
-            // Предполагается, что есть таблица attendance с полями student_id и status
-            PreparedStatement pstmtAttendance = connect.prepareStatement(
-                    "SELECT COUNT(*) AS total, SUM(CASE WHEN status = 'Присутствовал' THEN 1 ELSE 0 END) AS present FROM attendance WHERE student_id = ?");
-            pstmtAttendance.setInt(1, studentId);
-            ResultSet rsAttendance = pstmtAttendance.executeQuery();
-            double attendancePercentage = 0.0;
-            if (rsAttendance.next()) {
-                int total = rsAttendance.getInt("total");
-                int present = rsAttendance.getInt("present");
-                if (total > 0) {
-                    attendancePercentage = ((double) present / total) * 100.0;
-                }
-            }
-
-            // Всего предметов
-            PreparedStatement pstmtSubjects = connect.prepareStatement(
-                    "SELECT COUNT(DISTINCT discipline) AS total_subjects FROM student WHERE student_id = ?");
-            pstmtSubjects.setInt(1, studentId);
-            ResultSet rsSubjects = pstmtSubjects.executeQuery();
-            int totalSubjects = 0;
-            if (rsSubjects.next()) {
-                totalSubjects = rsSubjects.getInt("total_subjects");
-            }
-
-            // Успеваемость по предметам
-            // Предполагается, что есть таблица grades с полями student_id, discipline, grade
-            PreparedStatement pstmtGrades = connect.prepareStatement(
-                    "SELECT discipline, AVG(grade) AS avg_grade FROM grades WHERE student_id = ? GROUP BY discipline");
-            pstmtGrades.setInt(1, studentId);
-            ResultSet rsGrades = pstmtGrades.executeQuery();
-            List<String> grades = new ArrayList<>();
-            while (rsGrades.next()) {
-                String discipline = rsGrades.getString("discipline");
-                double avgDisciplineGrade = rsGrades.getDouble("avg_grade");
-                grades.add(String.format("%s,%.2f", discipline, avgDisciplineGrade));
-            }
-
-            // Формирование ответа
-            String response = String.format("REPORT_STUDENT|%s|%s|%.2f|%d|%s", firstName + " " + lastName, groupId, avgGrade, totalSubjects, String.join(";", grades));
-            out.println(response);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            out.println("ERROR|" + e.getMessage());
-        }
     }
 
     private void handleReportGlobal() {
-        try {
-            // Общее количество студентов
-            Statement stmt = connect.createStatement();
-            ResultSet rsTotalStudents = stmt.executeQuery("SELECT COUNT(*) AS total_students FROM student");
-            int totalStudents = 0;
-            if (rsTotalStudents.next()) {
-                totalStudents = rsTotalStudents.getInt("total_students");
-            }
-
-            // Количество групп
-            ResultSet rsTotalGroups = stmt.executeQuery("SELECT COUNT(DISTINCT group_id) AS total_groups FROM student");
-            int totalGroups = 0;
-            if (rsTotalGroups.next()) {
-                totalGroups = rsTotalGroups.getInt("total_groups");
-            }
-
-            // Средний балл по факультету
-            ResultSet rsAvgFaculty = stmt.executeQuery("SELECT AVG(average_grade) AS avg_faculty_grade FROM student");
-            double avgFacultyGrade = 0.0;
-            if (rsAvgFaculty.next()) {
-                avgFacultyGrade = rsAvgFaculty.getDouble("avg_faculty_grade");
-            }
-
-            // Посещаемость (общая)
-            ResultSet rsAttendance = stmt.executeQuery("SELECT COUNT(*) AS total, SUM(CASE WHEN status = 'Присутствовал' THEN 1 ELSE 0 END) AS present FROM attendance");
-            double overallAttendance = 0.0;
-            if (rsAttendance.next()) {
-                int total = rsAttendance.getInt("total");
-                int present = rsAttendance.getInt("present");
-                if (total > 0) {
-                    overallAttendance = ((double) present / total) * 100.0;
-                }
-            }
-
-            // Таблица по группам
-            PreparedStatement pstmtGroup = connect.prepareStatement(
-                    "SELECT group_id, COUNT(*) AS student_count, AVG(average_grade) AS avg_grade, " +
-                            "SUM(CASE WHEN status = 'Присутствовал' THEN 1 ELSE 0 END) * 100.0 / COUNT(*) AS attendance_percentage, " +
-                            "MAX(average_grade) AS best_grade " +
-                            "FROM student GROUP BY group_id");
-            ResultSet rsGroup = pstmtGroup.executeQuery();
-            List<String> groups = new ArrayList<>();
-            while (rsGroup.next()) {
-                String groupId = rsGroup.getString("group_id");
-                int studentCount = rsGroup.getInt("student_count");
-                double avgGrade = rsGroup.getDouble("avg_grade");
-                double attendance = rsGroup.getDouble("attendance_percentage");
-                double bestGrade = rsGroup.getDouble("best_grade");
-                groups.add(String.format("%s,%d,%.2f,%.2f,%.2f", groupId, studentCount, avgGrade, attendance, bestGrade));
-            }
-
-            // Формирование ответа
-            String response = String.format("REPORT_GLOBAL|%d|%d|%.2f|%.2f|%s", totalStudents, totalGroups, avgFacultyGrade, overallAttendance, String.join(";", groups));
-            out.println(response);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            out.println("ERROR|" + e.getMessage());
-        }
     }
 
 }

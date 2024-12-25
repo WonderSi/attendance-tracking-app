@@ -1,0 +1,6 @@
+дек. 25, 2024 7:41:24 AM org.example.server.Server main
+INFO: Сервер запущен на порту 2048
+дек. 25, 2024 7:41:29 AM org.example.server.Server main
+INFO: Новый клиент подключен: /127.0.0.1
+дек. 25, 2024 7:42:51 AM org.example.server.Server main
+INFO: Новый клиент подключен: /127.0.0.1

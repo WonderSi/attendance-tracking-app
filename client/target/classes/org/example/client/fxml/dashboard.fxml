@@ -83,7 +83,7 @@
                     <center>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                             <children>
-                                <AnchorPane fx:id="home_form" layoutX="176.0" layoutY="157.0" prefHeight="600.0" prefWidth="900.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <AnchorPane fx:id="home_form" layoutX="176.0" layoutY="157.0" prefHeight="600.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane layoutX="13.0" layoutY="10.0" prefHeight="578.0" prefWidth="874.0" stylesheets="@../css/main.css">
                                  <children>
@@ -462,7 +462,7 @@
                                         </AnchorPane>
                                     </children>
                                 </AnchorPane>
-                        <AnchorPane fx:id="reports_form" prefHeight="600.0" prefWidth="900.0">
+                        <AnchorPane fx:id="reports_form" prefHeight="600.0" prefWidth="900.0" visible="false">
                            <children>
                               <AnchorPane layoutX="13.0" layoutY="10.0" prefHeight="578.0" prefWidth="874.0" stylesheets="@../css/main.css">
                                  <children>

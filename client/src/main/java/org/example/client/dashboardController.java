@@ -12,6 +12,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import java.util.logging.*;
+import java.nio.file.*;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -25,6 +27,8 @@ import java.sql.Date;
 import java.util.*;
 
 public class dashboardController implements Initializable {
+
+    private static final Logger logger = Logger.getLogger(dashboardController.class.getName());
 
     @FXML
     private AnchorPane main_form;
@@ -104,7 +108,8 @@ public class dashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        setupLogger();
+        logger.info("Инициализация контроллера");
         //подключение
         try {
             socket = new Socket("127.0.0.1", 2048);
@@ -130,7 +135,39 @@ public class dashboardController implements Initializable {
         home_btn.setStyle("-fx-background-color: linear-gradient(to bottom, rgba(255,255,255,0.01), rgba(255,255,255,0.17)); ");
     }
 
+    private void setupLogger() {
+        try {
+            //удаление стандартных обработчиков
+            Logger rootLogger = Logger.getLogger("");
+            Handler[] handlers = rootLogger.getHandlers();
+            for (Handler handler : handlers) {
+                rootLogger.removeHandler(handler);
+            }
+
+            //создание обработчика для консоли
+            ConsoleHandler consoleHandler = new ConsoleHandler();
+            consoleHandler.setLevel(Level.ALL);
+            consoleHandler.setFormatter(new SimpleFormatter());
+
+            //создание обработчика для файла
+            FileHandler fileHandler = new FileHandler("application.log", true);
+            fileHandler.setLevel(Level.ALL);
+            fileHandler.setFormatter(new SimpleFormatter());
+
+            //добавление обработчиков к логгеру
+            logger.addHandler(consoleHandler);
+            logger.addHandler(fileHandler);
+
+            logger.setLevel(Level.ALL);
+            logger.setUseParentHandlers(false);
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Ошибка", "Не удалось настроить логирование.");
+        }
+    }
+
     private void updateCounters() {
+        logger.info("Обновление чисел для карточек с информацией");
         long uniqueStudents = student.stream()
                 .map(s -> s.getFirstName() + " " + s.getLastName() + " " + s.getGroupID()) // Учитываем имя, фамилию и группу
                 .distinct()
@@ -155,6 +192,7 @@ public class dashboardController implements Initializable {
 
 
     public void studentShowListData() {
+        logger.info("Инициализация таблицы");
         //инициализация
         studentsColStudentID.setCellValueFactory(new PropertyValueFactory<>("studentID"));
         studentsColDate.setCellValueFactory(new PropertyValueFactory<>("date"));
@@ -174,6 +212,7 @@ public class dashboardController implements Initializable {
     }
 
     private void loadData() {
+        logger.info("Запрос данных студентов");
         out.println("GET");
         try {
             String response = in.readLine();
@@ -208,6 +247,7 @@ public class dashboardController implements Initializable {
     }
 
     private void updateBarChart() {
+        logger.info("Обновление диаграммы посещаемости");
         //создание серии данных, для столбчатой диаграммы
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Количество посещений по датам");
@@ -286,6 +326,7 @@ public class dashboardController implements Initializable {
 
 
     public void switchForm(ActionEvent event) {
+        logger.info("Переключение между окнами");
         if (event.getSource() == home_btn) {
             home_form.setVisible(true);
             students_form.setVisible(false);
@@ -313,6 +354,7 @@ public class dashboardController implements Initializable {
 
 
     public void onTableClick(javafx.scene.input.MouseEvent mouseEvent) {
+        logger.info("Выделение данных из таблицы");
         if (mouseEvent.getClickCount() == 2) { // Для двойного клика
             StudentData selected = studentsTableView.getSelectionModel().getSelectedItem();
             if (selected != null) {
@@ -342,6 +384,7 @@ public class dashboardController implements Initializable {
 
 
     private void applyFilterAndSearch() {
+        logger.info("Использование ф-ций фильтра и поиска");
         String keyword = studentsFieldSearch.getText().toLowerCase();
         String filter1 = (String) studentsComboBoxFilterOne.getSelectionModel().getSelectedItem();
         String filter2 = (String) studentsComboBoxFilterTwo.getSelectionModel().getSelectedItem();
@@ -368,18 +411,22 @@ public class dashboardController implements Initializable {
     }
     @FXML
     private void onSearch() {
+        logger.info("Использование строки поиска");
         applyFilterAndSearch();
     }
     @FXML
     private void onFilterOne() {
+        logger.info("Использование первого фильтра");
         applyFilterAndSearch();
     }
     @FXML
     private void onFilterTwo() {
+        logger.info("Использование второго фильтра");
         applyFilterAndSearch();
     }
     @FXML
     private void onFilterThree() {
+        logger.info("Использование третьего фильтра");
         applyFilterAndSearch();
     }
 
@@ -387,6 +434,7 @@ public class dashboardController implements Initializable {
 
     @FXML
     private void onClear() {
+        logger.info("Сброс значений в полях ввода");
         studentsFieldStudentID.clear();
         studentsFieldDate.clear();
         studentsFieldDiscipline.clear();
@@ -399,6 +447,7 @@ public class dashboardController implements Initializable {
     };
     @FXML
     private void onDelete() {
+        logger.info("Попытка удаления записи с ID: " + studentsFieldStudentID.getText());
         StudentData selected = studentsTableView.getSelectionModel().getSelectedItem();
         if (selected == null) {
             showAlert("Внимание", "Выберите запись для удаления.");
@@ -421,15 +470,18 @@ public class dashboardController implements Initializable {
                 loadData();
                 updateCounters();
                 onClear();
+                logger.info("Запись с ID " + studentsFieldStudentID.getText() + " успешно удалена");
             } else if (response.startsWith("ERROR|")) {
                 showAlert("Ошибка", response.substring(6));
             }
         } catch (IOException e) {
-            showAlert("Ошибка", "Ошибка при удалении записи.");
+            logger.log(Level.SEVERE, "Ошибка при удалении записи.", e);
+            showAlert("Ошибка", "Ошибка при удалении записи: " + e.getMessage());
         }
     };
     @FXML
     private void onUpdate() {
+        logger.info("Попытка обновлении записи в таблице");
         StudentData selected = studentsTableView.getSelectionModel().getSelectedItem();
         if (selected == null) {
             showAlert("Внимание", "Выберите запись для обновления.");
@@ -467,11 +519,13 @@ public class dashboardController implements Initializable {
                 showAlert("Ошибка", response.substring(6));
             }
         } catch (IOException e) {
-            showAlert("Ошибка", "Ошибка при обновлении записи.");
+            logger.log(Level.SEVERE, "Ошибка при обновлении записи.", e);
+            showAlert("Ошибка", "Ошибка при обновлении записи: " + e.getMessage());
         }
     };
     @FXML
     private void onAdd() {
+        logger.info("Попытка добавления новой записи");
         String date = studentsFieldDate.getText();
         String discipline = studentsFieldDiscipline.getText();
         String groupID = studentsFieldGroupID.getText();
@@ -499,11 +553,13 @@ public class dashboardController implements Initializable {
                 updateCounters();
                 updateBarChart();
                 onClear();
+                logger.info("Новая запись успешно добавлена: " + firstName + " " + lastName);
             } else if (response.startsWith("ERROR|")) {
                 showAlert("Ошибка", response.substring(6));
             }
         } catch (IOException e) {
-            showAlert("Ошибка", "Ошибка при добавлении записи.");
+            logger.log(Level.SEVERE, "Ошибка при добавлении записи", e);
+            showAlert("Ошибка", "Ошибка при добавлении записи: " + e.getMessage());
         }
     };
 
@@ -514,6 +570,7 @@ public class dashboardController implements Initializable {
 
     @FXML
     private void onExportExcel() {
+        logger.info("Попытка экспорт данных в формате Excel");
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Сохранить как Excel");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel Files", "*.xlsx"));
@@ -558,152 +615,14 @@ public class dashboardController implements Initializable {
 
                 showAlert("Успех", "Экспорт в Excel выполнен успешно.");
             } catch (Exception e) {
-                e.printStackTrace();
-                showAlert("Ошибка", "Не удалось экспортировать в Excel.");
+                logger.log(Level.SEVERE, "Не удалось экспортировать в Excel.", e);
+                showAlert("Ошибка", "Не удалось экспортировать в Excel: " + e.getMessage());
             }
         }
     }
 
-//    @FXML
-//    private void onGeneralReport() {
-//        // Запрос общего отчета по группе
-//        TextInputDialog dialog = new TextInputDialog();
-//        dialog.setTitle("Общий отчет");
-//        dialog.setHeaderText("Введите ID группы для отчета:");
-//        dialog.setContentText("ID группы:");
-//
-//        dialog.showAndWait().ifPresent(groupId -> {
-//            String command = String.join("|", "REPORT_GENERAL", groupId);
-//            out.println(command);
-//            try {
-//                String response = in.readLine();
-//                if (response.startsWith("REPORT_GENERAL|")) {
-//                    String[] parts = response.split("\\|", 4);
-//                    if (parts.length == 4) {
-//                        int studentCount = Integer.parseInt(parts[1]);
-//                        double avgGrade = Double.parseDouble(parts[2]);
-//                        String[] students = parts[3].split(";");
-//
-//                        // Обновление таблицы
-//                        reportData.clear();
-//                        for (String s : students) {
-//                            String[] fields = s.split(",");
-//                            if (fields.length >= 6) {
-//                                int id = Integer.parseInt(fields[0]);
-//                                String firstName = fields[1];
-//                                String lastName = fields[2];
-//                                double grade = Double.parseDouble(fields[3]);
-//                                String status = fields[4];
-//                                String note = fields[5];
-//                                reportData.add(new StudentData(id, null, null, null, firstName, lastName, status, note));
-//                                // Дополните по необходимости
-//                            }
-//                        }
-//
-//                        showAlert("Успех", String.format("Группа: %s\nКоличество студентов: %d\nСредний балл: %.2f", groupId, studentCount, avgGrade));
-//                    }
-//                } else if (response.startsWith("ERROR|")) {
-//                    showAlert("Ошибка", response.substring(6));
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                showAlert("Ошибка", "Не удалось получить отчет с сервера.");
-//            }
-//        });
-//    }
-//
-//    @FXML
-//    private void onStudentReport() {
-//        // Запрос отчета по студенту
-//        TextInputDialog dialog = new TextInputDialog();
-//        dialog.setTitle("Отчет по студенту");
-//        dialog.setHeaderText("Введите ID студента для отчета:");
-//        dialog.setContentText("ID студента:");
-//
-//        dialog.showAndWait().ifPresent(studentId -> {
-//            String command = String.join("|", "REPORT_STUDENT", studentId);
-//            out.println(command);
-//            try {
-//                String response = in.readLine();
-//                if (response.startsWith("REPORT_STUDENT|")) {
-//                    String[] parts = response.split("\\|", 6);
-//                    if (parts.length == 6) {
-//                        String fullName = parts[1];
-//                        String groupId = parts[2];
-//                        double avgGrade = Double.parseDouble(parts[3]);
-//                        int totalSubjects = Integer.parseInt(parts[4]);
-//                        String[] grades = parts[5].split(";");
-//
-//                        // Обновление таблицы
-//                        reportData.clear();
-//                        for (String g : grades) {
-//                            String[] fields = g.split(",");
-//                            if (fields.length == 2) {
-//                                String discipline = fields[0];
-//                                double disciplineGrade = Double.parseDouble(fields[1]);
-//                                // Создайте отдельную модель данных для отображения дисциплин и оценок
-//                                // Или используйте существующую модель с соответствующими полями
-//                            }
-//                        }
-//
-//                        showAlert("Успех", String.format("Имя студента: %s\nГруппа: %s\nСредний балл: %.2f\nВсего предметов: %d", fullName, groupId, avgGrade, totalSubjects));
-//                    }
-//                } else if (response.startsWith("ERROR|")) {
-//                    showAlert("Ошибка", response.substring(6));
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                showAlert("Ошибка", "Не удалось получить отчет с сервера.");
-//            }
-//        });
-//    }
-//
-//    @FXML
-//    private void onGlobalReport() {
-//        // Запрос глобального отчета
-//        String command = "REPORT_GLOBAL";
-//        out.println(command);
-//        try {
-//            String response = in.readLine();
-//            if (response.startsWith("REPORT_GLOBAL|")) {
-//                String[] parts = response.split("\\|", 6);
-//                if (parts.length == 6) {
-//                    int totalStudents = Integer.parseInt(parts[1]);
-//                    int totalGroups = Integer.parseInt(parts[2]);
-//                    double avgFacultyGrade = Double.parseDouble(parts[3]);
-//                    double overallAttendance = Double.parseDouble(parts[4]);
-//                    String[] groups = parts[5].split(";");
-//
-//                    // Обновление таблицы
-//                    reportData.clear();
-//                    for (String g : groups) {
-//                        String[] fields = g.split(",");
-//                        if (fields.length == 5) {
-//                            String groupId = fields[0];
-//                            int studentCount = Integer.parseInt(fields[1]);
-//                            double avgGrade = Double.parseDouble(fields[2]);
-//                            double attendance = Double.parseDouble(fields[3]);
-//                            double bestGrade = Double.parseDouble(fields[4]);
-//                            // Добавьте данные в таблицу
-//                            // Например:
-//                            reportData.add(new StudentData(0, null, null, null, groupId, String.valueOf(studentCount), String.valueOf(avgGrade), String.valueOf(attendance)));
-//                        }
-//                    }
-//
-//                    showAlert("Успех", String.format("Общее количество студентов: %d\nКоличество групп: %d\nСредний балл по факультету: %.2f\nПосещаемость: %.2f%%", totalStudents, totalGroups, avgFacultyGrade, overallAttendance));
-//                }
-//            } else if (response.startsWith("ERROR|")) {
-//                showAlert("Ошибка", response.substring(6));
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            showAlert("Ошибка", "Не удалось получить отчет с сервера.");
-//        }
-//    }
-
-
-
     private void showAlert(String title, String message) {
+        logger.info("Вызов Alert");
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);

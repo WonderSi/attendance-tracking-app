@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class dashboardApplication extends Application {
-    private dashboardController controller;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -15,7 +14,6 @@ public class dashboardApplication extends Application {
             Scene scene = new Scene(loader.load());
             primaryStage.setTitle("Система учета посещаемости");
             primaryStage.setScene(scene);
-//        primaryStage.setOnCloseRequest(event -> controller.shutdown()); // Обработчик закрытия
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();
