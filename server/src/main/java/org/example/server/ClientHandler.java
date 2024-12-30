@@ -50,6 +50,9 @@ class ClientHandler implements Runnable {
                     case "GET_GROUPS":
                         handleGetGroups();
                         break;
+                    case "GET_STATUSES":
+                        handleGetStatuses();
+                        break;
                     case "ADD":
                         handleAdd(parts);
                         break;
@@ -149,12 +152,30 @@ class ClientHandler implements Runnable {
             }
 
             out.println(String.join(";", groups));
-            logger.info("Отправлены группы клиенты");
+            logger.info("Отправлены группы клиенту");
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Ошибка при выполнении handleGetGroups", e);
             out.println("ERROR|" + e.getMessage());
         }
     }
+
+    private void handleGetStatuses() {
+        try {
+            Statement stmt = connect.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT DISTINCT status FROM student");
+            List<String> statuses = new ArrayList<>();
+
+            while (rs.next()) {
+                statuses.add(rs.getString("status"));
+            }
+
+            out.println(String.join(";", statuses));
+            logger.info("Отправлены статусы клиенту");
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Ошибка при выполнении handleGetStatuses", e);
+            out.println("ERROR|" + e.getMessage());
+        }
+    };
 
     private void handleAdd(String[] parts) {
         try {

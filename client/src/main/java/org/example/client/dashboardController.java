@@ -366,8 +366,28 @@ public class dashboardController implements Initializable {
     }
 
     private String[] listFilterThree = {"Все", "Присутствовал", "Отсутствовал"};
-
     public void studentFilterListThree() {
+        try {
+            out.println("GET_STATUSES");
+            String response = in.readLine();
+
+            if (response != null && !response.isEmpty()) {
+                List<String> statusList = new ArrayList<>();
+                statusList.add("Все");
+
+                String[] statuses = response.split(";");
+                for (String status : statuses) {
+                    statusList.add(status);
+                }
+
+                ObservableList<String> listData = FXCollections.observableArrayList(statusList);
+                studentsComboBoxFilterThree.setItems(listData);
+                studentsComboBoxFilterThree.getSelectionModel().select("Все");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         List<String> listS = new ArrayList<>();
 
         for (String data : listFilterThree) {

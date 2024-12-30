@@ -50,3 +50,15 @@ INFO: Новый клиент подключен: /127.0.0.1
 INFO: Новый клиент подключен: /127.0.0.1
 дек. 30, 2024 5:50:39 PM org.example.server.Server main
 INFO: Новый клиент подключен: /127.0.0.1
+дек. 30, 2024 6:01:12 PM org.example.server.Server main
+INFO: Сервер запущен на порту 2048
+дек. 30, 2024 6:01:16 PM org.example.server.Server main
+INFO: Новый клиент подключен: /127.0.0.1
+дек. 30, 2024 6:02:08 PM org.example.server.Server main
+INFO: Новый клиент подключен: /127.0.0.1
+дек. 30, 2024 6:03:39 PM org.example.server.Server main
+INFO: Новый клиент подключен: /127.0.0.1
+дек. 30, 2024 9:12:46 PM org.example.server.Server main
+INFO: Сервер запущен на порту 2048
+дек. 30, 2024 9:12:50 PM org.example.server.Server main
+INFO: Новый клиент подключен: /127.0.0.1

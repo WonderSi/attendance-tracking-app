@@ -13,6 +13,7 @@ public class dashboardApplication extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/client/fxml/dashboard.fxml"));
             Scene scene = new Scene(loader.load());
             primaryStage.setTitle("Система учета посещаемости");
+            primaryStage.setResizable(false);
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (Exception e) {

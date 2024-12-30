@@ -784,3 +784,129 @@ INFO: Переключение между окнами
 INFO: Переключение между окнами
 дек. 30, 2024 5:51:57 PM org.example.client.dashboardController switchForm
 INFO: Переключение между окнами
+дек. 30, 2024 6:01:01 PM org.example.client.dashboardController initialize
+INFO: Инициализация контроллера
+дек. 30, 2024 6:01:01 PM org.example.client.dashboardController showAlert
+INFO: Вызов Alert
+дек. 30, 2024 6:01:07 PM org.example.client.dashboardController studentShowListData
+INFO: Инициализация таблицы
+дек. 30, 2024 6:01:16 PM org.example.client.dashboardController initialize
+INFO: Инициализация контроллера
+дек. 30, 2024 6:01:16 PM org.example.client.dashboardController loadData
+INFO: Запрос данных студентов
+дек. 30, 2024 6:01:17 PM org.example.client.dashboardController studentShowListData
+INFO: Инициализация таблицы
+дек. 30, 2024 6:01:17 PM org.example.client.dashboardController updateBarChart
+INFO: Обновление диаграммы посещаемости
+дек. 30, 2024 6:01:17 PM org.example.client.dashboardController updateCounters
+INFO: Обновление чисел для карточек с информацией
+дек. 30, 2024 6:01:22 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:01:37 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:01:38 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:01:39 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:01:40 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:01:41 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:01:43 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:01:43 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:02:08 PM org.example.client.dashboardController initialize
+INFO: Инициализация контроллера
+дек. 30, 2024 6:02:08 PM org.example.client.dashboardController loadData
+INFO: Запрос данных студентов
+дек. 30, 2024 6:02:08 PM org.example.client.dashboardController studentShowListData
+INFO: Инициализация таблицы
+дек. 30, 2024 6:02:08 PM org.example.client.dashboardController updateBarChart
+INFO: Обновление диаграммы посещаемости
+дек. 30, 2024 6:02:08 PM org.example.client.dashboardController updateCounters
+INFO: Обновление чисел для карточек с информацией
+дек. 30, 2024 6:02:10 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:03:39 PM org.example.client.dashboardController initialize
+INFO: Инициализация контроллера
+дек. 30, 2024 6:03:39 PM org.example.client.dashboardController loadData
+INFO: Запрос данных студентов
+дек. 30, 2024 6:03:39 PM org.example.client.dashboardController studentShowListData
+INFO: Инициализация таблицы
+дек. 30, 2024 6:03:39 PM org.example.client.dashboardController updateBarChart
+INFO: Обновление диаграммы посещаемости
+дек. 30, 2024 6:03:39 PM org.example.client.dashboardController updateCounters
+INFO: Обновление чисел для карточек с информацией
+дек. 30, 2024 6:03:46 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:03:46 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:03:47 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:03:48 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:03:48 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:06:06 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:06:06 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:06:07 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:06:12 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:06:15 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:06:15 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:06:16 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:06:16 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:06:17 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:06:17 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:06:18 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:06:18 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 6:15:34 PM org.example.client.dashboardController onClear
+INFO: Сброс значений в полях ввода
+дек. 30, 2024 9:12:50 PM org.example.client.dashboardController initialize
+INFO: Инициализация контроллера
+дек. 30, 2024 9:12:50 PM org.example.client.dashboardController loadData
+INFO: Запрос данных студентов
+дек. 30, 2024 9:12:51 PM org.example.client.dashboardController studentShowListData
+INFO: Инициализация таблицы
+дек. 30, 2024 9:12:51 PM org.example.client.dashboardController updateBarChart
+INFO: Обновление диаграммы посещаемости
+дек. 30, 2024 9:12:51 PM org.example.client.dashboardController updateCounters
+INFO: Обновление чисел для карточек с информацией
+дек. 30, 2024 9:12:54 PM org.example.client.dashboardController switchForm
+INFO: Переключение между окнами
+дек. 30, 2024 9:12:57 PM org.example.client.dashboardController onFilterThree
+INFO: Использование третьего фильтра
+дек. 30, 2024 9:12:57 PM org.example.client.dashboardController applyFilterAndSearch
+INFO: Использование ф-ций фильтра и поиска
+дек. 30, 2024 9:12:58 PM org.example.client.dashboardController onFilterThree
+INFO: Использование третьего фильтра
+дек. 30, 2024 9:12:58 PM org.example.client.dashboardController applyFilterAndSearch
+INFO: Использование ф-ций фильтра и поиска
+дек. 30, 2024 9:13:02 PM org.example.client.dashboardController onFilterThree
+INFO: Использование третьего фильтра
+дек. 30, 2024 9:13:02 PM org.example.client.dashboardController applyFilterAndSearch
+INFO: Использование ф-ций фильтра и поиска
+дек. 30, 2024 9:13:08 PM org.example.client.dashboardController onFilterOne
+INFO: Использование первого фильтра
+дек. 30, 2024 9:13:08 PM org.example.client.dashboardController applyFilterAndSearch
+INFO: Использование ф-ций фильтра и поиска
+дек. 30, 2024 9:13:09 PM org.example.client.dashboardController onFilterOne
+INFO: Использование первого фильтра
+дек. 30, 2024 9:13:09 PM org.example.client.dashboardController applyFilterAndSearch
+INFO: Использование ф-ций фильтра и поиска
+дек. 30, 2024 9:13:10 PM org.example.client.dashboardController onFilterOne
+INFO: Использование первого фильтра
+дек. 30, 2024 9:13:10 PM org.example.client.dashboardController applyFilterAndSearch
+INFO: Использование ф-ций фильтра и поиска
