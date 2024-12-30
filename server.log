@@ -4,3 +4,49 @@ INFO: Сервер запущен на порту 2048
 INFO: Новый клиент подключен: /127.0.0.1
 дек. 25, 2024 7:42:51 AM org.example.server.Server main
 INFO: Новый клиент подключен: /127.0.0.1
+дек. 25, 2024 8:06:50 AM org.example.server.Server main
+INFO: Сервер запущен на порту 2048
+дек. 25, 2024 8:06:56 AM org.example.server.Server main
+INFO: Новый клиент подключен: /127.0.0.1
+дек. 25, 2024 8:13:16 AM org.example.server.Server main
+INFO: Новый клиент подключен: /127.0.0.1
+дек. 25, 2024 8:20:27 AM org.example.server.Server main
+INFO: Новый клиент подключен: /127.0.0.1
+дек. 30, 2024 4:41:02 PM org.example.server.Server main
+INFO: Сервер запущен на порту 2048
+дек. 30, 2024 4:41:44 PM org.example.server.Server main
+INFO: Сервер запущен на порту 2048
+дек. 30, 2024 4:47:15 PM org.example.server.Server main
+INFO: Сервер запущен на порту 2048
+дек. 30, 2024 4:50:39 PM org.example.server.Server main
+INFO: Сервер запущен на порту 2048
+дек. 30, 2024 4:50:46 PM org.example.server.Server main
+INFO: Новый клиент подключен: /127.0.0.1
+дек. 30, 2024 5:17:38 PM org.example.server.Server main
+INFO: Сервер запущен на порту 2048
+дек. 30, 2024 5:17:46 PM org.example.server.Server main
+INFO: Новый клиент подключен: /127.0.0.1
+дек. 30, 2024 5:18:27 PM org.example.server.Server main
+INFO: Сервер запущен на порту 2048
+дек. 30, 2024 5:18:31 PM org.example.server.Server main
+INFO: Новый клиент подключен: /127.0.0.1
+дек. 30, 2024 5:19:12 PM org.example.server.Server main
+INFO: Новый клиент подключен: /127.0.0.1
+дек. 30, 2024 5:21:30 PM org.example.server.Server main
+INFO: Новый клиент подключен: /127.0.0.1
+дек. 30, 2024 5:27:54 PM org.example.server.Server main
+INFO: Новый клиент подключен: /127.0.0.1
+дек. 30, 2024 5:34:11 PM org.example.server.Server main
+INFO: Новый клиент подключен: /127.0.0.1
+дек. 30, 2024 5:38:07 PM org.example.server.Server main
+INFO: Новый клиент подключен: /127.0.0.1
+дек. 30, 2024 5:41:49 PM org.example.server.Server main
+INFO: Сервер запущен на порту 2048
+дек. 30, 2024 5:41:55 PM org.example.server.Server main
+INFO: Новый клиент подключен: /127.0.0.1
+дек. 30, 2024 5:42:59 PM org.example.server.Server main
+INFO: Новый клиент подключен: /127.0.0.1
+дек. 30, 2024 5:46:17 PM org.example.server.Server main
+INFO: Новый клиент подключен: /127.0.0.1
+дек. 30, 2024 5:50:39 PM org.example.server.Server main
+INFO: Новый клиент подключен: /127.0.0.1

@@ -1,5 +1,6 @@
 package org.example.client;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,8 +13,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+
 import java.util.logging.*;
 import java.nio.file.*;
+
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -33,14 +36,19 @@ public class dashboardController implements Initializable {
     @FXML
     private AnchorPane main_form;
 
-    @FXML private Label homeLabelUniqueStudents;
-    @FXML private Label homeLabelGroupCount;
-    @FXML private Label homeLabelDisciplineCount;
+    @FXML
+    private Label homeLabelUniqueStudents;
+    @FXML
+    private Label homeLabelGroupCount;
+    @FXML
+    private Label homeLabelDisciplineCount;
+
 
     @FXML
     private Button home_btn;
 
-    @FXML private BarChart<String, Number> home_chart;
+    @FXML
+    private BarChart<String, Number> home_chart;
 
     @FXML
     private AnchorPane home_form;
@@ -54,26 +62,48 @@ public class dashboardController implements Initializable {
     @FXML
     private Button students_clearBtn;
 
-    @FXML private TableView<StudentData> studentsTableView;
-    @FXML private TableColumn<StudentData, Integer> studentsColStudentID;
-    @FXML private TableColumn<StudentData, String> studentsColDate;
-    @FXML private TableColumn<StudentData, String> studentsColDiscipline;
-    @FXML private TableColumn<StudentData, String> studentsColGroupID;
-    @FXML private TableColumn<StudentData, String> studentsColFirstName;
-    @FXML private TableColumn<StudentData, String> studentsColLastName;
-    @FXML private TableColumn<StudentData, String> studentsColStatus;
-    @FXML private TableColumn<StudentData, String> studentsColNote;
-    @FXML private TableColumn<StudentData, Integer> studentsColPoint;
 
-    @FXML private TextField studentsFieldStudentID;
-    @FXML private TextField studentsFieldDate;
-    @FXML private TextField studentsFieldDiscipline;
-    @FXML private TextField studentsFieldGroupID;
-    @FXML private TextField studentsFieldFirstName;
-    @FXML private TextField studentsFieldLastName;
-    @FXML private ComboBox studentsComboBoxStatus;
-    @FXML private TextField studentsFieldNote;
-    @FXML private TextField studentsFieldPoint;
+    @FXML
+    private TableView<StudentData> studentsTableView;
+    @FXML
+    private TableColumn<StudentData, Integer> studentsColStudentID;
+    @FXML
+    private TableColumn<StudentData, String> studentsColDate;
+    @FXML
+    private TableColumn<StudentData, String> studentsColDiscipline;
+    @FXML
+    private TableColumn<StudentData, String> studentsColGroupID;
+    @FXML
+    private TableColumn<StudentData, String> studentsColFirstName;
+    @FXML
+    private TableColumn<StudentData, String> studentsColLastName;
+    @FXML
+    private TableColumn<StudentData, String> studentsColStatus;
+    @FXML
+    private TableColumn<StudentData, String> studentsColNote;
+    @FXML
+    private TableColumn<StudentData, Integer> studentsColPoint;
+
+
+    @FXML
+    private TextField studentsFieldStudentID;
+    @FXML
+    private TextField studentsFieldDate;
+    @FXML
+    private TextField studentsFieldDiscipline;
+    @FXML
+    private TextField studentsFieldGroupID;
+    @FXML
+    private TextField studentsFieldFirstName;
+    @FXML
+    private TextField studentsFieldLastName;
+    @FXML
+    private ComboBox studentsComboBoxStatus;
+    @FXML
+    private TextField studentsFieldNote;
+    @FXML
+    private TextField studentsFieldPoint;
+
 
     @FXML
     private TextField studentsFieldSearch;
@@ -131,7 +161,11 @@ public class dashboardController implements Initializable {
         updateCounters();
 
 
-        studentsTableView.addEventFilter(ScrollEvent.ANY, event -> { if (event.getDeltaX() != 0) { event.consume(); } });
+        studentsTableView.addEventFilter(ScrollEvent.ANY, event -> {
+            if (event.getDeltaX() != 0) {
+                event.consume();
+            }
+        });
         home_btn.setStyle("-fx-background-color: linear-gradient(to bottom, rgba(255,255,255,0.01), rgba(255,255,255,0.17)); ");
     }
 
@@ -206,6 +240,7 @@ public class dashboardController implements Initializable {
 
         studentsTableView.setItems(student);
     }
+
     public void reportShowListData() {
         //инициализация
 
@@ -217,7 +252,7 @@ public class dashboardController implements Initializable {
         try {
             String response = in.readLine();
             if ("ERROR".equals(response)) {
-                showAlert("Error", "Failed to retrieve users.");
+                showAlert("Error", "Ошибка получения пользователей.");
                 return;
             }
 
@@ -272,8 +307,6 @@ public class dashboardController implements Initializable {
         home_chart.getData().add(series);
     }
 
-
-
     private String[] listStatus = {"Присутствовал", "Отсутствовал"};
     public void studentStatusList() {
         List<String> listS = new ArrayList<> ();
@@ -286,33 +319,56 @@ public class dashboardController implements Initializable {
         studentsComboBoxStatus.setItems(listData);
     }
 
-    private String[] listFilterOne = {"Все", "Математика", "Информатика", "Русский"};
     public void studentFilterListOne() {
-        List<String> listS = new ArrayList<> ();
+        try {
+            out.println("GET_DISCIPLINES");
+            String response = in.readLine();
 
-        for (String data : listFilterOne) {
-            listS.add(data);
+            if (response != null && !response.isEmpty()) {
+                List<String> disciplineList = new ArrayList<>();
+                disciplineList.add("Все");
+
+                String[] disciplines = response.split(";");
+                for (String discipline : disciplines) {
+                    disciplineList.add(discipline);
+                }
+
+                ObservableList<String> listData = FXCollections.observableArrayList(disciplineList);
+                studentsComboBoxFilterOne.setItems(listData);
+                studentsComboBoxFilterOne.getSelectionModel().select("Все");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        ObservableList listData = FXCollections.observableArrayList(listS);
-        studentsComboBoxFilterOne.setItems(listData);
-        studentsComboBoxFilterOne.getSelectionModel().select("Все");
     }
-    private String[] listFilterTwo = {"Все", "ФИТ-231", "МОА-231", "ПМИ-231", "КБ-231", "ПИ-231"};
+
     public void studentFilterListTwo() {
-        List<String> listS = new ArrayList<> ();
+        try {
+            out.println("GET_GROUPS");
+            String response = in.readLine();
 
-        for (String data : listFilterTwo) {
-            listS.add(data);
+            if (response != null && !response.isEmpty()) {
+                List<String> groupList = new ArrayList<>();
+                groupList.add("Все");
+
+                String[] groups = response.split(";");
+                for (String group : groups) {
+                    groupList.add(group);
+                }
+
+                ObservableList<String> listData = FXCollections.observableArrayList(groupList);
+                studentsComboBoxFilterTwo.setItems(listData);
+                studentsComboBoxFilterTwo.getSelectionModel().select("Все");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        ObservableList listData = FXCollections.observableArrayList(listS);
-        studentsComboBoxFilterTwo.setItems(listData);
-        studentsComboBoxFilterTwo.getSelectionModel().select("Все");
     }
+
     private String[] listFilterThree = {"Все", "Присутствовал", "Отсутствовал"};
+
     public void studentFilterListThree() {
-        List<String> listS = new ArrayList<> ();
+        List<String> listS = new ArrayList<>();
 
         for (String data : listFilterThree) {
             listS.add(data);
@@ -322,7 +378,6 @@ public class dashboardController implements Initializable {
         studentsComboBoxFilterThree.setItems(listData);
         studentsComboBoxFilterThree.getSelectionModel().select("Все");
     }
-
 
 
     public void switchForm(ActionEvent event) {
@@ -382,7 +437,6 @@ public class dashboardController implements Initializable {
     }
 
 
-
     private void applyFilterAndSearch() {
         logger.info("Использование ф-ций фильтра и поиска");
         String keyword = studentsFieldSearch.getText().toLowerCase();
@@ -409,27 +463,30 @@ public class dashboardController implements Initializable {
             return matchesKeyword && matchesFilterOne && matchesFilterTwo && matchesFilterThree;
         }));
     }
+
     @FXML
     private void onSearch() {
         logger.info("Использование строки поиска");
         applyFilterAndSearch();
     }
+
     @FXML
     private void onFilterOne() {
         logger.info("Использование первого фильтра");
         applyFilterAndSearch();
     }
+
     @FXML
     private void onFilterTwo() {
         logger.info("Использование второго фильтра");
         applyFilterAndSearch();
     }
+
     @FXML
     private void onFilterThree() {
         logger.info("Использование третьего фильтра");
         applyFilterAndSearch();
     }
-
 
 
     @FXML
@@ -444,7 +501,10 @@ public class dashboardController implements Initializable {
         studentsComboBoxStatus.getSelectionModel().clearSelection();
         studentsFieldNote.clear();
         studentsFieldPoint.clear();
-    };
+    }
+
+    ;
+
     @FXML
     private void onDelete() {
         logger.info("Попытка удаления записи с ID: " + studentsFieldStudentID.getText());
@@ -469,6 +529,9 @@ public class dashboardController implements Initializable {
                 showAlert("Успех", response.substring(8));
                 loadData();
                 updateCounters();
+                updateBarChart();
+                studentFilterListOne();
+                studentFilterListTwo();
                 onClear();
                 logger.info("Запись с ID " + studentsFieldStudentID.getText() + " успешно удалена");
             } else if (response.startsWith("ERROR|")) {
@@ -478,7 +541,10 @@ public class dashboardController implements Initializable {
             logger.log(Level.SEVERE, "Ошибка при удалении записи.", e);
             showAlert("Ошибка", "Ошибка при удалении записи: " + e.getMessage());
         }
-    };
+    }
+
+    ;
+
     @FXML
     private void onUpdate() {
         logger.info("Попытка обновлении записи в таблице");
@@ -514,6 +580,8 @@ public class dashboardController implements Initializable {
                 loadData();
                 updateCounters();
                 updateBarChart();
+                studentFilterListOne();
+                studentFilterListTwo();
                 onClear();
             } else if (response.startsWith("ERROR|")) {
                 showAlert("Ошибка", response.substring(6));
@@ -522,7 +590,10 @@ public class dashboardController implements Initializable {
             logger.log(Level.SEVERE, "Ошибка при обновлении записи.", e);
             showAlert("Ошибка", "Ошибка при обновлении записи: " + e.getMessage());
         }
-    };
+    }
+
+    ;
+
     @FXML
     private void onAdd() {
         logger.info("Попытка добавления новой записи");
@@ -552,6 +623,8 @@ public class dashboardController implements Initializable {
                 loadData();
                 updateCounters();
                 updateBarChart();
+                studentFilterListOne();
+                studentFilterListTwo();
                 onClear();
                 logger.info("Новая запись успешно добавлена: " + firstName + " " + lastName);
             } else if (response.startsWith("ERROR|")) {
@@ -561,11 +634,9 @@ public class dashboardController implements Initializable {
             logger.log(Level.SEVERE, "Ошибка при добавлении записи", e);
             showAlert("Ошибка", "Ошибка при добавлении записи: " + e.getMessage());
         }
-    };
+    }
 
-
-
-
+    ;
 
 
     @FXML

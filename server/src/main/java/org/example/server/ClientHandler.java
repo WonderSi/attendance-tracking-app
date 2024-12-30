@@ -31,37 +31,6 @@ class ClientHandler implements Runnable {
         }
     }
 
-    private void setupLogger() {
-        try {
-            //удаление стандартных обработчиков
-            Logger rootLogger = Logger.getLogger("");
-            Handler[] handlers = rootLogger.getHandlers();
-            for (Handler handler : handlers) {
-                rootLogger.removeHandler(handler);
-            }
-
-            //создание обработчика для консоли
-            ConsoleHandler consoleHandler = new ConsoleHandler();
-            consoleHandler.setLevel(Level.ALL);
-            consoleHandler.setFormatter(new SimpleFormatter());
-
-            //создание обработчика для файла
-            FileHandler fileHandler = new FileHandler("server.log", true);
-            fileHandler.setLevel(Level.ALL);
-            fileHandler.setFormatter(new SimpleFormatter());
-
-            //добавление обработчиков к логгеру
-            logger.addHandler(consoleHandler);
-            logger.addHandler(fileHandler);
-
-            logger.setLevel(Level.ALL);
-            logger.setUseParentHandlers(false);
-        } catch (IOException e) {
-            e.printStackTrace();
-            // Если логирование не удалось настроить, продолжаем без него
-        }
-    }
-
     @Override
     public void run() {
         try {
@@ -74,6 +43,12 @@ class ClientHandler implements Runnable {
                 switch (command) {
                     case "GET":
                         handleGet();
+                        break;
+                    case "GET_DISCIPLINES":
+                        handleGetDisciplines();
+                        break;
+                    case "GET_GROUPS":
+                        handleGetGroups();
                         break;
                     case "ADD":
                         handleAdd(parts);
@@ -141,6 +116,42 @@ class ClientHandler implements Runnable {
             out.println(String.join(";", students));
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Ошибка при выполнении handleGet", e);
+            out.println("ERROR|" + e.getMessage());
+        }
+    }
+
+    private void handleGetDisciplines() {
+        try {
+            Statement stmt = connect.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT DISTINCT discipline FROM student");
+            List<String> disciplines = new ArrayList<>();
+
+            while (rs.next()) {
+                disciplines.add(rs.getString("discipline"));
+            }
+
+            out.println(String.join(";", disciplines));
+            logger.info("Отправлены дисциплины клиенту");
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Ошибка при выполнении handleGetDisciplines", e);
+            out.println("ERROR|" + e.getMessage());
+        }
+    }
+
+    private void handleGetGroups() {
+        try {
+            Statement stmt = connect.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT DISTINCT group_id FROM student");
+            List<String> groups = new ArrayList<>();
+
+            while (rs.next()) {
+                groups.add(rs.getString("group_id"));
+            }
+
+            out.println(String.join(";", groups));
+            logger.info("Отправлены группы клиенты");
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Ошибка при выполнении handleGetGroups", e);
             out.println("ERROR|" + e.getMessage());
         }
     }
@@ -228,6 +239,37 @@ class ClientHandler implements Runnable {
     }
 
     private void handleReportGlobal() {
+    }
+
+    private void setupLogger() {
+        try {
+            //удаление стандартных обработчиков
+            Logger rootLogger = Logger.getLogger("");
+            Handler[] handlers = rootLogger.getHandlers();
+            for (Handler handler : handlers) {
+                rootLogger.removeHandler(handler);
+            }
+
+            //создание обработчика для консоли
+            ConsoleHandler consoleHandler = new ConsoleHandler();
+            consoleHandler.setLevel(Level.ALL);
+            consoleHandler.setFormatter(new SimpleFormatter());
+
+            //создание обработчика для файла
+            FileHandler fileHandler = new FileHandler("server.log", true);
+            fileHandler.setLevel(Level.ALL);
+            fileHandler.setFormatter(new SimpleFormatter());
+
+            //добавление обработчиков к логгеру
+            logger.addHandler(consoleHandler);
+            logger.addHandler(fileHandler);
+
+            logger.setLevel(Level.ALL);
+            logger.setUseParentHandlers(false);
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Если логирование не удалось настроить, продолжаем без него
+        }
     }
 
 }
